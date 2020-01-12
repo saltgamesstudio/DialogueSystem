@@ -543,7 +543,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Name
+  m_Text: Ini Nama
 --- !u!222 &537524138
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -807,7 +807,8 @@ MonoBehaviour:
   charaSprite: {fileID: 0}
   lineText: {fileID: 1702420466}
   nameText: {fileID: 537524137}
-  typingSpeed: 0.0125
+  colorFormat: {r: 1, g: 0, b: 0, a: 0}
+  isColoredText: 0
 --- !u!1 &1258440798
 GameObject:
   m_ObjectHideFlags: 0
@@ -1372,7 +1373,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: <color=red>Test</color>
+  m_Text: Ini Dialog
 --- !u!222 &1702420467
 CanvasRenderer:
   m_ObjectHideFlags: 0

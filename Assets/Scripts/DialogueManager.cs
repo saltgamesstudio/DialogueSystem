@@ -14,16 +14,19 @@ public class DialogueManager : MonoBehaviour
     public Sprite charaSprite;
     public Text lineText;
     public Text nameText;
+    public Color colorFormat;
 
 
-    [SerializeField] private float typingSpeed = .01f;
+    private readonly float typingSpeed = .01f;
 
 
     private int lineCounter = 0;
     private bool isTyping = false;
 
     private Coroutine speaking;
+    private string formatHelper = "";
 
+    public bool isColoredText = false;
     private void Start()
     {
         lineCounter = 0;
@@ -38,7 +41,7 @@ public class DialogueManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            
+           
         }
 
      
@@ -51,7 +54,10 @@ public class DialogueManager : MonoBehaviour
     public void ButtonControl()
     {
         if (isTyping)
+        {
+            
             StopTyping();
+        }
         else
         {
             NextLine();
@@ -61,22 +67,51 @@ public class DialogueManager : MonoBehaviour
     public void StartTyping(string name, string sentence)
     {
         if (speaking != null) StopAllCoroutines();
+        
         speaking = StartCoroutine(Typing(sentence));
         isTyping = true;
-
-        log.AddLog(name, sentence);
     }
 
     IEnumerator Typing(string sentence)
     {
         lineText.text = "";
+        string helper = "";
+        
         foreach (char letter in sentence)
         {
-            lineText.text += letter;
-            yield return new WaitForSeconds(typingSpeed);
+
+            helper += letter;
+            
+            if (letter == '<')
+            {
+                isColoredText = true;
+                continue;
+            }
+            
+            if (isColoredText)
+            {
+                if(letter == '>')
+                {
+                    isColoredText = false;
+                    continue;
+                }
+                //string formattedChar = "<color=red>" + letter + "</color>";
+                string formattedChar = "<color=" + ColorToHexString(colorFormat) + ">" + letter + "</color>";
+                lineText.text += formattedChar;
+                formatHelper += formattedChar;
+                yield return new WaitForSeconds(typingSpeed);
+            }
+            else
+            {
+                lineText.text += letter;
+                formatHelper += letter;
+                yield return new WaitForSeconds(typingSpeed);
+            }
+
         }
-        if (lineText.text == sentence)
+        if (helper == sentence)
         {
+            
             StopTyping();
         }
 
@@ -99,7 +134,32 @@ public class DialogueManager : MonoBehaviour
 
     public void SkipTyping()
     {
-        lineText.text = conversation.lines[lineCounter].text;
+        string skippedLine = "";
+        foreach (char letter in conversation.lines[lineCounter].text)
+        {
+            if (letter == '<')
+            {
+                isColoredText = true;
+                continue;
+            }
+
+            if (isColoredText)
+            {
+                if (letter == '>')
+                {
+                    isColoredText = false;
+                    continue;
+                }
+                //string formattedChar = "<color=red>" + letter + "</color>";
+                string formattedChar = "<color=" + ColorToHexString(colorFormat) + ">" + letter + "</color>";
+                skippedLine += formattedChar;
+            }
+            else
+            {
+                skippedLine += letter;
+            }
+        }
+        lineText.text = skippedLine;
     }
     public void StopTyping()
     {
@@ -107,8 +167,13 @@ public class DialogueManager : MonoBehaviour
 
         StopCoroutine(speaking);
         isTyping = false;
-
-
+        formatHelper = lineText.text;
+        log.AddLog(conversation.lines[lineCounter].character.charaName, lineText.text);
+    }
+    string ColorToHexString(Color color)
+    {
+        Color32 color32 = color;
+        return string.Format("#{0:X2}{1:X2}{2:X2}{3:X2}", color32.r, color32.g, color32.b, color32.a);
     }
 
 
