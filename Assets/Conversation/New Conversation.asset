@@ -16,7 +16,7 @@ MonoBehaviour:
   - character: {fileID: 11400000, guid: da9d779a66d9eb0419ed34cb093a4b1b, type: 2}
     expression: 0
     text: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua.
+      <color=red>tempor incididunt</color> ut labore et dolore magna aliqua.
   - character: {fileID: 11400000, guid: da9d779a66d9eb0419ed34cb093a4b1b, type: 2}
     expression: 0
     text: Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
@@ -24,9 +24,27 @@ MonoBehaviour:
   - character: {fileID: 11400000, guid: da9d779a66d9eb0419ed34cb093a4b1b, type: 2}
     expression: 0
     text: Tes3
-  - character: {fileID: 0}
+  - character: {fileID: 11400000, guid: da9d779a66d9eb0419ed34cb093a4b1b, type: 2}
     expression: 0
-    text: 
-  - character: {fileID: 0}
+    text: Tes4
+  - character: {fileID: 11400000, guid: da9d779a66d9eb0419ed34cb093a4b1b, type: 2}
     expression: 0
-    text: 
+    text: 5
+  - character: {fileID: 11400000, guid: da9d779a66d9eb0419ed34cb093a4b1b, type: 2}
+    expression: 0
+    text: 5
+  - character: {fileID: 11400000, guid: da9d779a66d9eb0419ed34cb093a4b1b, type: 2}
+    expression: 0
+    text: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+      tempor ut labore et dolore magna aliqua.
+  - character: {fileID: 11400000, guid: da9d779a66d9eb0419ed34cb093a4b1b, type: 2}
+    expression: 0
+    text: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+      tempor ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur
+      adipiscing elit, sed do eiusmod tempor ut labore et dolore magna aliqua.
+  - character: {fileID: 11400000, guid: da9d779a66d9eb0419ed34cb093a4b1b, type: 2}
+    expression: 0
+    text: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - character: {fileID: 11400000, guid: da9d779a66d9eb0419ed34cb093a4b1b, type: 2}
+    expression: 0
+    text: 9

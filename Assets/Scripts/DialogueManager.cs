@@ -2,73 +2,98 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Create temporary text to hold formatted text and send them to real one
+/// </summary>
+
 public class DialogueManager : MonoBehaviour
 {
-    public static DialogueManager instance;
     public Conversation conversation;
-    public int lineCounter;
+    public LogManager log;
 
     public Sprite charaSprite;
     public Text lineText;
     public Text nameText;
 
-    public float typingSpeed = .01f;
-    public bool isTyping = false;
 
-    Coroutine speaking;
+    [SerializeField] private float typingSpeed = .01f;
 
-    private void Awake()
-    {
-        instance = this;
-    }
+
+    private int lineCounter = 0;
+    private bool isTyping = false;
+
+    private Coroutine speaking;
+
     private void Start()
     {
         lineCounter = 0;
         nameText.text = conversation.lines[lineCounter].character.charaName;
         lineText.text = "";
 
-        StartTyping( conversation.lines[lineCounter].character.charaName, conversation.lines[lineCounter].text);
+        StartTyping(conversation.lines[lineCounter].character.charaName, conversation.lines[lineCounter].text);
     }
 
+    
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if(isTyping)
-                StopTyping();
-            else {
-                lineCounter++;
-                StartTyping(conversation.lines[lineCounter].character.charaName, conversation.lines[lineCounter].text);
-            }
+            
+        }
+
+     
+    }
+    public void UpdateLog()
+    {
+        
+    }
+
+    public void ButtonControl()
+    {
+        if (isTyping)
+            StopTyping();
+        else
+        {
+            NextLine();
         }
     }
 
     public void StartTyping(string name, string sentence)
     {
-        StopAllCoroutines();
+        if (speaking != null) StopAllCoroutines();
         speaking = StartCoroutine(Typing(sentence));
         isTyping = true;
+
+        log.AddLog(name, sentence);
     }
 
     IEnumerator Typing(string sentence)
     {
         lineText.text = "";
-        isTyping = true;
         foreach (char letter in sentence)
         {
             lineText.text += letter;
             yield return new WaitForSeconds(typingSpeed);
         }
-        if(lineText.text == sentence)
+        if (lineText.text == sentence)
         {
             StopTyping();
         }
-        
+
     }
 
     public void NextLine()
     {
-
+        if (lineCounter == conversation.lines.Length - 1)
+        {
+            Debug.Log("Selesai");
+            return;
+        }
+        else
+        {
+            lineCounter++;
+            StartTyping(conversation.lines[lineCounter].character.charaName, conversation.lines[lineCounter].text);
+        }
     }
 
 
@@ -83,8 +108,8 @@ public class DialogueManager : MonoBehaviour
         StopCoroutine(speaking);
         isTyping = false;
 
-        
+
     }
 
-    
+
 }

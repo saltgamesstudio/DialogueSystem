@@ -11,4 +11,7 @@ public class Character : ScriptableObject
     //bunch of sprite for additional expression according to enum Expression in Line class
     public Sprite idle;
 
+
+    public string description;
+
 }
