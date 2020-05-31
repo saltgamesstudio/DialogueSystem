@@ -807,7 +807,7 @@ MonoBehaviour:
   charaSprite: {fileID: 0}
   lineText: {fileID: 1702420466}
   nameText: {fileID: 537524137}
-  colorFormat: {r: 1, g: 0, b: 0, a: 0}
+  colorFormat: {r: 0.03127098, g: 0, b: 1, a: 1}
   isColoredText: 0
 --- !u!1 &1258440798
 GameObject:
@@ -1694,7 +1694,7 @@ Canvas:
   m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
-  m_PixelPerfect: 0
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0

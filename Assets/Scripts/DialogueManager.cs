@@ -1,180 +1,97 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Events;
+using TMPro;
 
 /// <summary>
 /// Create temporary text to hold formatted text and send them to real one
 /// </summary>
 
+
+public enum Emotion {HAPPY, SAD, ANGRY }
+[Serializable] public class ExpressionEvent : UnityEvent<Emotion> { };
+[Serializable] public class ActionEvent : UnityEvent<string> { };
+[Serializable] public class DialogueEvent : UnityEvent<string> { };
+
 public class DialogueManager : MonoBehaviour
 {
-    public Conversation conversation;
-    public LogManager log;
+    public static DialogueManager instance;
+    [SerializeField] private Conversation conversation;
+    [SerializeField] private LogManager log;
 
-    public Sprite charaSprite;
-    public Text lineText;
-    public Text nameText;
-    public Color colorFormat;
+    [Space]
+    //typing speed in character per second
+    [SerializeField][Tooltip("In Character per Second")] private float defaultTypingSpeed = 20;
 
-
-    private readonly float typingSpeed = .01f;
-
-
-    private int lineCounter = 0;
-    private bool isTyping = false;
-
-    private Coroutine speaking;
-    private string formatHelper = "";
-
-    public bool isColoredText = false;
-    private void Start()
-    {
-        lineCounter = 0;
-        nameText.text = conversation.lines[lineCounter].character.charaName;
-        lineText.text = "";
-
-        StartTyping(conversation.lines[lineCounter].character.charaName, conversation.lines[lineCounter].text);
-    }
+    [SerializeField] private Sprite charaSprite;
+    [SerializeField] private TMP_Text lineText;
+    [SerializeField] private TMP_Text nameText;
 
     
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-           
-        }
+    string[] customTagLists = new string[] {"speed","pause","expression"};
 
-     
-    }
-    public void UpdateLog()
+    private void Awake()
     {
-        
+        instance = this;
+    }
+    private void Start()
+    {
+        ReadText(conversation.lines[0].text);
     }
 
-    public void ButtonControl()
+    private void ReadText(string line)
     {
-        if (isTyping)
-        {
-            
-            StopTyping();
-        }
-        else
-        {
-            NextLine();
-        }
-    }
+        string displayText = string.Empty;
+        lineText.text = string.Empty;
 
-    public void StartTyping(string name, string sentence)
-    {
-        if (speaking != null) StopAllCoroutines();
-        
-        speaking = StartCoroutine(Typing(sentence));
-        isTyping = true;
-    }
-
-    IEnumerator Typing(string sentence)
-    {
-        lineText.text = "";
-        string helper = "";
-        
-        foreach (char letter in sentence)
+        //parse tag and normal text
+        //tag will be odd number index, normal text or empty string will be even number 
+        string[] subTexts = line.Split('<','>');
+        for(int i = 0; i < subTexts.Length; i++)
         {
-
-            helper += letter;
-            
-            if (letter == '<')
+            if(i % 2 == 0)
             {
-                isColoredText = true;
-                continue;
+                displayText += subTexts[i];
             }
-            
-            if (isColoredText)
+            //if it is built in tag
+            else if(!isCustomTag(subTexts[i].Replace(" ", "")))
             {
-                if(letter == '>')
-                {
-                    isColoredText = false;
-                    continue;
-                }
-                //string formattedChar = "<color=red>" + letter + "</color>";
-                string formattedChar = "<color=" + ColorToHexString(colorFormat) + ">" + letter + "</color>";
-                lineText.text += formattedChar;
-                formatHelper += formattedChar;
-                yield return new WaitForSeconds(typingSpeed);
-            }
-            else
-            {
-                lineText.text += letter;
-                formatHelper += letter;
-                yield return new WaitForSeconds(typingSpeed);
-            }
-
-        }
-        if (helper == sentence)
-        {
-            
-            StopTyping();
-        }
-
-    }
-
-    public void NextLine()
-    {
-        if (lineCounter == conversation.lines.Length - 1)
-        {
-            Debug.Log("Selesai");
-            return;
-        }
-        else
-        {
-            lineCounter++;
-            StartTyping(conversation.lines[lineCounter].character.charaName, conversation.lines[lineCounter].text);
-        }
-    }
-
-
-    public void SkipTyping()
-    {
-        string skippedLine = "";
-        foreach (char letter in conversation.lines[lineCounter].text)
-        {
-            if (letter == '<')
-            {
-                isColoredText = true;
-                continue;
-            }
-
-            if (isColoredText)
-            {
-                if (letter == '>')
-                {
-                    isColoredText = false;
-                    continue;
-                }
-                //string formattedChar = "<color=red>" + letter + "</color>";
-                string formattedChar = "<color=" + ColorToHexString(colorFormat) + ">" + letter + "</color>";
-                skippedLine += formattedChar;
-            }
-            else
-            {
-                skippedLine += letter;
+                displayText += $"<{subTexts[i]}>";
             }
         }
-        lineText.text = skippedLine;
-    }
-    public void StopTyping()
-    {
-        if (isTyping) SkipTyping();
+        lineText.text = displayText;
+        lineText.maxVisibleCharacters = 0;
+        StartCoroutine(Typing(line));
 
-        StopCoroutine(speaking);
-        isTyping = false;
-        formatHelper = lineText.text;
-        log.AddLog(conversation.lines[lineCounter].character.charaName, lineText.text);
-    }
-    string ColorToHexString(Color color)
-    {
-        Color32 color32 = color;
-        return string.Format("#{0:X2}{1:X2}{2:X2}{3:X2}", color32.r, color32.g, color32.b, color32.a);
     }
 
+    private IEnumerator Typing(string line)
+    {
+        int counter = 0;
+        float speed = defaultTypingSpeed;
+        while (counter < lineText.text.Length)
+        {
+            lineText.maxVisibleCharacters += 1;
+            yield return new WaitForSeconds(1/speed);
+        }
+        yield return null;
+    }
+
+
+    private bool isCustomTag(string tag)
+    {
+        foreach(string customTag in customTagLists)
+        {
+            return tag.StartsWith(customTag);
+        }
+        return false;
+    }
+
+    private void EvaluateTag()
+    {
+
+    }
+    
 
 }
