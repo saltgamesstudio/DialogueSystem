@@ -15,12 +15,13 @@ MonoBehaviour:
   lines:
   - character: {fileID: 11400000, guid: da9d779a66d9eb0419ed34cb093a4b1b, type: 2}
     expression: 0
-    text: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      <tempor incididunt> incididunt ut labore et <dolore> magna aliqua.
+    text: Lorem  ipsum dolor sit amet<pause=1>, consectetur <color=red>ullamco</color><speed=100>adipiscing
+      elit, sed do eiusmod <tempor incididunt> incididunt ut labore et <dolore> magna
+      aliqua.
   - character: {fileID: 11400000, guid: da9d779a66d9eb0419ed34cb093a4b1b, type: 2}
-    expression: 0
-    text: Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
-      ut aliquip ex ea commodo consequat.
+    expression: 2
+    text: Ut enim ad minim veniam, quis nostrud exercitation <color=red>ullamco</color>
+      laboris nisi ut aliquip ex ea commodo consequat.
   - character: {fileID: 11400000, guid: da9d779a66d9eb0419ed34cb093a4b1b, type: 2}
     expression: 0
     text: Tes3

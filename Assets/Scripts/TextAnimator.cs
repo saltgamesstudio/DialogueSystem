@@ -1,8 +1,8 @@
-﻿ using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
-public class ConversationManager : TextMeshProUGUI
+
+public class TextAnimator : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -13,6 +13,6 @@ public class ConversationManager : TextMeshProUGUI
     // Update is called once per frame
     void Update()
     {
-       
+        
     }
 }
