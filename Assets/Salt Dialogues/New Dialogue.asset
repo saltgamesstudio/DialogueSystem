@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ec1617398e61f340a4bce9892911f2a, type: 3}
+  m_Name: New Dialogue
+  m_EditorClassIdentifier: 
+  Nodes:
+  - Guid: 055cebbb-d8e1-4ce1-a012-40567dee7acc
+    Position: {x: 250, y: 92}
+    Character: {fileID: 0}
+    isChoiceNode: 0
+    TextDatas:
+    - 
+  - Guid: a0d7d03c-42df-4279-adc9-0b42d5e1928a
+    Position: {x: 679, y: 81}
+    Character: {fileID: 0}
+    isChoiceNode: 0
+    TextDatas:
+    - 
+  - Guid: edcb27bb-0cea-467a-930c-625e174ec3f5
+    Position: {x: 1073, y: 70}
+    Character: {fileID: 0}
+    isChoiceNode: 1
+    TextDatas:
+    - 
+    - 
+  - Guid: 9c3afaa4-4d10-4086-9228-22a36a43f4c5
+    Position: {x: 1470, y: -66}
+    Character: {fileID: 0}
+    isChoiceNode: 0
+    TextDatas:
+    - 
+  - Guid: 9960d4e0-7b22-47cc-8795-9902211c0680
+    Position: {x: 1566, y: 159}
+    Character: {fileID: 0}
+    isChoiceNode: 0
+    TextDatas:
+    - 
+  Edges:
+  - Prev: dfec2901-e028-43c9-9c73-2f070fd5ab01
+    Next: 055cebbb-d8e1-4ce1-a012-40567dee7acc
+  - Prev: 055cebbb-d8e1-4ce1-a012-40567dee7acc
+    Next: a0d7d03c-42df-4279-adc9-0b42d5e1928a
+  - Prev: a0d7d03c-42df-4279-adc9-0b42d5e1928a
+    Next: edcb27bb-0cea-467a-930c-625e174ec3f5
+  - Prev: edcb27bb-0cea-467a-930c-625e174ec3f5
+    Next: 9c3afaa4-4d10-4086-9228-22a36a43f4c5
+  - Prev: edcb27bb-0cea-467a-930c-625e174ec3f5
+    Next: 9960d4e0-7b22-47cc-8795-9902211c0680

@@ -15,12 +15,12 @@ namespace Salt.DialogueSystem.Editor
     public class DataUtilities
     {
         private DialogueGraph graph;
-        private DialogueContainer container = null;
+        private DialogueContainer container;
 
         private List<Edge> Edges => graph.edges.ToList();
         private List<CustomNode> Nodes
         {
-            get 
+            get
             {
                 List<CustomNode> nodes = new List<CustomNode>();
                 List<Node> list = graph.nodes.ToList();
@@ -30,7 +30,7 @@ namespace Salt.DialogueSystem.Editor
                 });
                 return nodes;
             }
-            set 
+            set
             {
 
             }
@@ -38,24 +38,25 @@ namespace Salt.DialogueSystem.Editor
 
         private static DataUtilities instance;
 
-       
-        public static DataUtilities GetInstance(DialogueGraph graph)
+
+        public static DataUtilities GetInstance(DialogueGraph graph, DialogueContainer dialogueContainer)
         {
             return new DataUtilities
             {
-                graph = graph
+                graph = graph,
+                container = dialogueContainer
             };
         }
         public void GetGraphData(DialogueContainer dialogueContainer)
         {
-            if (Edges.Count == 0)
-            {
-                EditorUtility.DisplayDialog("No Dialogue Connection", "Make Sure You Have at Least 1 Connection Between Dialogues", "OK");
-                return;
-            }
+            //if (Edges.Count == 0)
+            //{
+            //    EditorUtility.DisplayDialog("No Dialogue Connection", "Make Sure You Have at Least 1 Connection Between Dialogues", "OK");
+            //    return;
+            //}
             foreach (var edge in Edges)
             {
-                if(edge.input != null)
+                if (edge.input != null)
                 {
                     dialogueContainer.Edges.Add(new EdgeData
                     {
@@ -76,11 +77,11 @@ namespace Salt.DialogueSystem.Editor
                     if (node is DialogueNode)
                     {
                         data.TextDatas.Add((node as DialogueNode).Text);
-                    } 
+                    }
                     else
                     {
                         List<string> temp = new List<string>();
-                        foreach(var question in (node as ChoiceNode).QuestionDict)
+                        foreach (var question in (node as ChoiceNode).QuestionDict)
                         {
                             temp.Add(question.Value);
                         }
@@ -103,14 +104,15 @@ namespace Salt.DialogueSystem.Editor
             AssetDatabase.CreateAsset(container, path);
             AssetDatabase.Refresh();
         }
-        public void LoadGraph(DialogueContainer dialogueContainer)
+        public void LoadGraph()
         {
-            GenerateNodeFromContainer(dialogueContainer);
-            GenerateEdgeFromContainer(dialogueContainer);
+           // ClearGraph();
+            GenerateNodeFromContainer();
+            GenerateEdgeFromContainer();
         }
-        private void GenerateNodeFromContainer(DialogueContainer dialogueContainer)
+        private void GenerateNodeFromContainer()
         {
-            foreach (var node in dialogueContainer.Nodes)
+            foreach (var node in container.Nodes)
             {
                 if (node.isChoiceNode)
                 {
@@ -125,38 +127,39 @@ namespace Salt.DialogueSystem.Editor
                 }
                 else
                 {
-                    DialogueNode temp = graph.CreateLineNode("Dialogue Node", node.TextDatas[0]); ;
+                    DialogueNode temp = graph.CreateDialogueNode("Dialogue Node", node.TextDatas[0], node.Character); ;
                     temp.Guid = node.Guid;
                     temp.SetPosition(new Rect(node.Position, graph.nodeSize));
                     graph.AddElement(temp);
                 }
             }
         }
-        private void GenerateEdgeFromContainer(DialogueContainer dialogueContainer)
+     
+        private void GenerateEdgeFromContainer()
         {
-            if (dialogueContainer.Edges.Count < 1) return;
             var entryNode = Nodes.Find(x => x.isEntryPoint);
-            entryNode.Guid = dialogueContainer.Edges[0].Prev;
-            ConnectNodes(entryNode.outputContainer.Q<Port>(), Nodes.Find(x => x.Guid == dialogueContainer.Edges[0].Next).Q<Port>());
+            entryNode.Guid = container.Edges[0].Prev;
             for (var i = 0; i < Nodes.Count; i++)
             {
-                var connections = dialogueContainer.Edges.Where(x => x.Prev == Nodes[i].Guid).ToList();
+                var connections = container.Edges.Where(x => x.Prev == Nodes[i].Guid).ToList();
                 foreach (var c in connections)
                 {
-                    var prevNode = Nodes.Find(n => n.Guid == c.Prev);
                     List<Port> choicePorts = new List<Port>();
-                    var nextNode = Nodes.Find(n => n.Guid == c.Next);
+                    var prevNode = Nodes.Find(n => n.Guid == c.Prev);
+                    var nextNode = Nodes.First(n => n.Guid == c.Next);
                     var outputPort = prevNode.outputContainer.Q<Port>();
                     var inputPort = nextNode.inputContainer.Q<Port>();
-                    if (prevNode.isChoiceNode)
-                    {
-                        choicePorts = prevNode.outputContainer.Query<Port>().ToList();
-                        foreach (var p in choicePorts)
-                        {
-                            ConnectNodes(p, inputPort);
-                        }
-                        continue;
-                    }
+                    //if (prevNode.isChoiceNode)
+                    //{
+                    //    choicePorts = prevNode.outputContainer.Query<Port>().ToList();
+                    //    Debug.Log(outputPort.portName);
+                    //    foreach (var p in choicePorts)
+                    //    {
+                    //        ConnectNodes(p, inputPort);
+                            
+                    //    }
+                    //    continue;
+                    //}
                     ConnectNodes(outputPort, inputPort);
                 }
             }
@@ -174,10 +177,9 @@ namespace Salt.DialogueSystem.Editor
             graph.Add(tempEdge);
         }
 
-       
 
-        
+
+
     }
 
 }
-

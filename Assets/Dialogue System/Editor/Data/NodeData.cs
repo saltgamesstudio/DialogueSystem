@@ -9,6 +9,7 @@ namespace Salt.DialogueSystem.Data
     {
         public string Guid;
         public Vector2 Position;
+        public Character Character;
         public bool isChoiceNode = false;
         public List<string> TextDatas = new List<string>();
     }

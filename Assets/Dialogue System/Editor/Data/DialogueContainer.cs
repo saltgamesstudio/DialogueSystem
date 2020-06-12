@@ -6,7 +6,7 @@ using System;
 
 namespace Salt.DialogueSystem.Runtime
 {
-    [CreateAssetMenu(fileName = "New Dialogue", menuName = "Assets/Salt Tools/Dialogue")]
+    [CreateAssetMenu(fileName = "New Dialogue", menuName = "Salt Studio/Dialogue")]
     [Serializable]
     public class DialogueContainer : ScriptableObject
     {

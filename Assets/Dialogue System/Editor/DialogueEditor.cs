@@ -8,7 +8,7 @@ using UnityEditor.UIElements;
 using Salt.DialogueSystem.Runtime;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.EditorTools;
-using System.Runtime.InteropServices.WindowsRuntime;
+using UnityEditor.ProjectWindowCallback;
 
 namespace Salt.DialogueSystem.Editor
 {
@@ -18,10 +18,12 @@ namespace Salt.DialogueSystem.Editor
         private static DialogueContainer container;
         private static DialogueGraph graph;
 
+        
 
         [OnOpenAssetAttribute(1)]
         public static bool OpenAssetCallback1(int instanceID, int line)
         {
+          
             path = AssetDatabase.GetAssetPath(instanceID);
             container = AssetDatabase.LoadAssetAtPath<DialogueContainer>(path);
             if (container != null)
@@ -29,7 +31,7 @@ namespace Salt.DialogueSystem.Editor
                 OpenWindow();
                 if (container is DialogueContainer)
                 {
-                    DataUtilities.GetInstance(graph).LoadGraph(container);
+                    DataUtilities.GetInstance(graph, container).LoadGraph();
                 }
                 return true;
             }
@@ -58,37 +60,63 @@ namespace Salt.DialogueSystem.Editor
             rootVisualElement.Add(graph);
 
             var toolbar = new Toolbar();
+            
 
-            var addDilogueNodeButton = new Button(() => {
+            var addDilogueNodeButton = new Button(() =>
+            {
                 graph.AddDialogueNode("Dialogue Node");
-            });
+            })
+            {
+                text = "New Dialogue Node"
+            };
 
-            addDilogueNodeButton.text = "New Dialogue Node";
-
-            var createChoiceNodeButton = new Button(() => {
+            var createChoiceNodeButton = new Button(() =>
+            {
                 graph.AddChoiceNode("Choice Node");
-            });
-            createChoiceNodeButton.text = "New Choice Node";
+            })
+            {
+                text = "New Choice Node"
+            };
 
-            var saveButton = new Button(() => {
-                var saveUtility = DataUtilities.GetInstance(graph);
+            var saveButton = new Button(() =>
+            {
+                var saveUtility = DataUtilities.GetInstance(graph, container);
                 saveUtility.SaveGraph(path);
-            });
-            saveButton.text = "Save";
+            })
+            {
+                text = "Save"
+            };
 
             toolbar.Add(addDilogueNodeButton);
             toolbar.Add(createChoiceNodeButton);
             toolbar.Add(saveButton);
 
+
+            
+            
             rootVisualElement.Add(toolbar);
         }
-       
 
+        private void GenerateBlackBoard()
+        {
+            var blackboard = new Blackboard(graph);
+            blackboard.Add(new BlackboardSection { title = "Exposed Variables" });
+            blackboard.addItemRequested = board =>
+            {
+                
+            };
+            
+            blackboard.SetPosition(new Rect(10, 30, 200, 300));
+            graph.Add(blackboard);
+            graph.Blackboard = blackboard;
+
+        }
         private void OnDisable()
         {
             rootVisualElement.Remove(graph);
         }
 
+        
     }
 
 }
