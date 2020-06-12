@@ -600,7 +600,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   conversation: {fileID: 11400000, guid: bb1eae7a1b737d040a473e6be4e602a2, type: 2}
-  Cococd: {fileID: 11400000, guid: 29794cb7da7aa9749a64fb0e6b5fff7d, type: 2}
+  container: {fileID: 11400000, guid: 62fab12a22f0d424e965a112325f114d, type: 2}
   isTyping: 0
   defaultTypingSpeed: 20
   charaSprite: {fileID: 0}

@@ -6,7 +6,7 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Salt.DialogueSystem.Data;
-
+using System.Security.Cryptography.X509Certificates;
 
 namespace Salt.DialogueSystem.Editor
 {
@@ -15,6 +15,8 @@ namespace Salt.DialogueSystem.Editor
         public readonly Vector2 nodeSize = new Vector2(150,200);
         public delegate void Logger(string a);
         private Logger LogToConsole;
+        private ContextMenu menu;
+        
         public DialogueGraph()
         {
             styleSheets.Add(Resources.Load<StyleSheet>("EditorStyle"));
@@ -26,10 +28,32 @@ namespace Salt.DialogueSystem.Editor
             AddElement(GenerateEntryPoint());
             var grid = new GridBackground();
             Insert(0, grid);
-
         }
 
-
+        public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
+        {
+            if (evt.target is GraphView)
+            {
+                evt.menu.AppendAction("Create Dialogue Node", delegate (DropdownMenuAction a) {
+                    var node = CreateLineNode("Dialogue Node", string.Empty);
+                    var nodePos = a.eventInfo.mousePosition;
+                    node.SetPosition(new Rect(nodePos, nodeSize));
+                    AddElement(node);
+                    Debug.Log(nodePos);
+                });
+            }
+            if (evt.target is GraphView)
+            {
+                evt.menu.AppendAction("Create Choice Node", delegate (DropdownMenuAction a) {
+                    var node = CreateChoiceNode("Choice Node");
+                    var nodePos = a.eventInfo.mousePosition;
+                    node.SetPosition(new Rect(nodePos, nodeSize));
+                    AddElement(node);
+                    Debug.Log(nodePos);
+                });
+            }
+            base.BuildContextualMenu(evt);
+        }
 
         private Port CreatePort(DialogueNode node, Direction direction, Port.Capacity capacity = Port.Capacity.Single)
         {
@@ -202,6 +226,8 @@ namespace Salt.DialogueSystem.Editor
             });
             return compatiblePorts;
         }
+
+        
     }
 
 }

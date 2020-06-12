@@ -31,7 +31,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private Conversation conversation = null;
     private LogManager log;
 
-    [SerializeField] private Conversation  Cococd = null;
+    [SerializeField] private DialogueContainer  container = null;
 
     [SerializeField] private bool isTyping;
 

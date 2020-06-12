@@ -20,7 +20,7 @@ namespace Salt.DialogueSystem.Editor
         private List<Edge> Edges => graph.edges.ToList();
         private List<CustomNode> Nodes
         {
-            get
+            get 
             {
                 List<CustomNode> nodes = new List<CustomNode>();
                 List<Node> list = graph.nodes.ToList();
@@ -30,7 +30,10 @@ namespace Salt.DialogueSystem.Editor
                 });
                 return nodes;
             }
-            set { }
+            set 
+            {
+
+            }
         }
 
         private static DataUtilities instance;
@@ -88,16 +91,18 @@ namespace Salt.DialogueSystem.Editor
                 }
             }
         }
-
-        public void SaveGraph(string fileName)
+        public void SaveGraph(string path)
         {
             var dialogueContainerObject = ScriptableObject.CreateInstance<DialogueContainer>();
             container = dialogueContainerObject;
             GetGraphData(container);
-            AssetDatabase.CreateAsset(container, fileName);
+            if (!AssetDatabase.IsValidFolder("Assets/Salt Dialogues"))
+            {
+                AssetDatabase.CreateFolder("Assets", "Salt Dialogues");
+            }
+            AssetDatabase.CreateAsset(container, path);
             AssetDatabase.Refresh();
         }
-
         public void LoadGraph(DialogueContainer dialogueContainer)
         {
             GenerateNodeFromContainer(dialogueContainer);
@@ -132,13 +137,10 @@ namespace Salt.DialogueSystem.Editor
             if (dialogueContainer.Edges.Count < 1) return;
             var entryNode = Nodes.Find(x => x.isEntryPoint);
             entryNode.Guid = dialogueContainer.Edges[0].Prev;
-            LinkNodesTogether(entryNode.outputContainer.Q<Port>(), Nodes.Find(x => x.Guid == dialogueContainer.Edges[0].Next).Q<Port>());
+            ConnectNodes(entryNode.outputContainer.Q<Port>(), Nodes.Find(x => x.Guid == dialogueContainer.Edges[0].Next).Q<Port>());
             for (var i = 0; i < Nodes.Count; i++)
             {
-                var k = i; //Prevent access to modified closure
-                var connections = dialogueContainer.Edges.Where(x => x.Prev == Nodes[k].Guid).ToList();
-                Debug.Log("Connection : " + connections.Count);
-
+                var connections = dialogueContainer.Edges.Where(x => x.Prev == Nodes[i].Guid).ToList();
                 foreach (var c in connections)
                 {
                     var prevNode = Nodes.Find(n => n.Guid == c.Prev);
@@ -149,20 +151,18 @@ namespace Salt.DialogueSystem.Editor
                     if (prevNode.isChoiceNode)
                     {
                         choicePorts = prevNode.outputContainer.Query<Port>().ToList();
-                        foreach (var z in choicePorts)
+                        foreach (var p in choicePorts)
                         {
-                            Debug.Log(choicePorts[0].portName);
-                            LinkNodesTogether(z, inputPort);
+                            ConnectNodes(p, inputPort);
                         }
                         continue;
                     }
-                    LinkNodesTogether(outputPort, inputPort);
-                    k++;
+                    ConnectNodes(outputPort, inputPort);
                 }
             }
         }
 
-        private void LinkNodesTogether(Port outputSocket, Port inputSocket)
+        private void ConnectNodes(Port outputSocket, Port inputSocket)
         {
             var tempEdge = new Edge()
             {

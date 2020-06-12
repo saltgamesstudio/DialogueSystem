@@ -6,13 +6,15 @@ using UnityEditor.Callbacks;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 using Salt.DialogueSystem.Runtime;
-using UnityEditor.VersionControl;
+using UnityEditor.Experimental.GraphView;
+using UnityEditor.EditorTools;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace Salt.DialogueSystem.Editor
 {
     public class DialogueEditor : EditorWindow
     {
-        private static string path = "New Dialogues";
+        private static string path = "Assets/Salt Dialogue/New Dialogues";
         private static DialogueContainer container;
         private static DialogueGraph graph;
 
@@ -24,28 +26,16 @@ namespace Salt.DialogueSystem.Editor
             container = AssetDatabase.LoadAssetAtPath<DialogueContainer>(path);
             if (container != null)
             {
-                Debug.Log("Contol");
                 OpenWindow();
-                
-                // path = AssetDatabase.GetAssetPath(container) ;
                 if (container is DialogueContainer)
                 {
                     DataUtilities.GetInstance(graph).LoadGraph(container);
-
                 }
                 return true;
             }
-
             return false;
-
-            
-            
-
         }
      
-
-
-
         [MenuItem("Salt Studio/Tools/Dialogue Editor")]
         public static void OpenWindow()
         {
@@ -80,19 +70,11 @@ namespace Salt.DialogueSystem.Editor
             });
             createChoiceNodeButton.text = "New Choice Node";
 
-      
-
             var saveButton = new Button(() => {
-
-
                 var saveUtility = DataUtilities.GetInstance(graph);
                 saveUtility.SaveGraph(path);
-                
-
-
             });
             saveButton.text = "Save";
-
 
             toolbar.Add(addDilogueNodeButton);
             toolbar.Add(createChoiceNodeButton);
@@ -106,7 +88,6 @@ namespace Salt.DialogueSystem.Editor
         {
             rootVisualElement.Remove(graph);
         }
-
 
     }
 
