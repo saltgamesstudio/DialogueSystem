@@ -13,45 +13,56 @@ MonoBehaviour:
   m_Name: New Dialogue
   m_EditorClassIdentifier: 
   Nodes:
-  - Guid: 055cebbb-d8e1-4ce1-a012-40567dee7acc
-    Position: {x: 250, y: 92}
+  - Guid: 89cdfc39-43a9-43d1-a051-aa379c4abc9c
+    Position: {x: 100, y: 100}
     Character: {fileID: 0}
+    isEntryPoint: 1
     isChoiceNode: 0
-    TextDatas:
-    - 
-  - Guid: a0d7d03c-42df-4279-adc9-0b42d5e1928a
-    Position: {x: 679, y: 81}
+    TextDatas: []
+  - Guid: 703ce68d-177a-4572-9c56-7d74c584f3ee
+    Position: {x: 1059, y: 183}
     Character: {fileID: 0}
-    isChoiceNode: 0
-    TextDatas:
-    - 
-  - Guid: edcb27bb-0cea-467a-930c-625e174ec3f5
-    Position: {x: 1073, y: 70}
-    Character: {fileID: 0}
+    isEntryPoint: 0
     isChoiceNode: 1
     TextDatas:
     - 
     - 
-  - Guid: 9c3afaa4-4d10-4086-9228-22a36a43f4c5
-    Position: {x: 1470, y: -66}
+  - Guid: 2038fa17-29dd-4b06-b258-a35568c672dc
+    Position: {x: 1442, y: 232}
     Character: {fileID: 0}
+    isEntryPoint: 0
     isChoiceNode: 0
     TextDatas:
     - 
-  - Guid: 9960d4e0-7b22-47cc-8795-9902211c0680
-    Position: {x: 1566, y: 159}
+  - Guid: b63291d5-4afb-4a54-8092-cc68827e5404
+    Position: {x: 1424, y: 466}
     Character: {fileID: 0}
+    isEntryPoint: 0
+    isChoiceNode: 0
+    TextDatas:
+    - 
+  - Guid: b1096905-3696-4cd3-8b60-557b63410f48
+    Position: {x: 563, y: -31}
+    Character: {fileID: 0}
+    isEntryPoint: 0
+    isChoiceNode: 0
+    TextDatas:
+    - 
+  - Guid: 3511f7a7-7ed6-4f78-970a-36511de560fa
+    Position: {x: 780, y: 293}
+    Character: {fileID: 0}
+    isEntryPoint: 0
     isChoiceNode: 0
     TextDatas:
     - 
   Edges:
-  - Prev: dfec2901-e028-43c9-9c73-2f070fd5ab01
-    Next: 055cebbb-d8e1-4ce1-a012-40567dee7acc
-  - Prev: 055cebbb-d8e1-4ce1-a012-40567dee7acc
-    Next: a0d7d03c-42df-4279-adc9-0b42d5e1928a
-  - Prev: a0d7d03c-42df-4279-adc9-0b42d5e1928a
-    Next: edcb27bb-0cea-467a-930c-625e174ec3f5
-  - Prev: edcb27bb-0cea-467a-930c-625e174ec3f5
-    Next: 9c3afaa4-4d10-4086-9228-22a36a43f4c5
-  - Prev: edcb27bb-0cea-467a-930c-625e174ec3f5
-    Next: 9960d4e0-7b22-47cc-8795-9902211c0680
+  - Prev: 703ce68d-177a-4572-9c56-7d74c584f3ee
+    Next: b63291d5-4afb-4a54-8092-cc68827e5404
+  - Prev: 703ce68d-177a-4572-9c56-7d74c584f3ee
+    Next: 2038fa17-29dd-4b06-b258-a35568c672dc
+  - Prev: 89cdfc39-43a9-43d1-a051-aa379c4abc9c
+    Next: b1096905-3696-4cd3-8b60-557b63410f48
+  - Prev: b1096905-3696-4cd3-8b60-557b63410f48
+    Next: 3511f7a7-7ed6-4f78-970a-36511de560fa
+  - Prev: 3511f7a7-7ed6-4f78-970a-36511de560fa
+    Next: 703ce68d-177a-4572-9c56-7d74c584f3ee

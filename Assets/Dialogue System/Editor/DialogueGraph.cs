@@ -6,18 +6,16 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Salt.DialogueSystem.Data;
-using System.Security.Cryptography.X509Certificates;
-using UnityEditor.UI;
-using UnityEditor.UIElements;
-
 
 namespace Salt.DialogueSystem.Editor
 {
     public class DialogueGraph : GraphView
     {
         public readonly Vector2 nodeSize = new Vector2(150,200);
-        private List<ExposedProperty> exposedProperties = new List<ExposedProperty>();
-        public Blackboard Blackboard;
+        public delegate void Logger(string a);
+        private Logger LogToConsole;
+        private ContextMenu menu;
+        
         public DialogueGraph()
         {
             styleSheets.Add(Resources.Load<StyleSheet>("EditorStyle"));
@@ -31,31 +29,36 @@ namespace Salt.DialogueSystem.Editor
             Insert(0, grid);
         }
 
-        
-
-
         public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
         {
             if (evt.target is GraphView)
             {
-                evt.menu.AppendAction("Create Dialogue Node", delegate (DropdownMenuAction a) {
-                    var node = CreateDialogueNode("Dialogue Node", string.Empty, null);
-                    var nodePos = a.eventInfo.mousePosition;
+                evt.menu.AppendAction("Create Dialogue Node", delegate (DropdownMenuAction a)
+                {
+                        
+                    var node = CreateLineNode("Dialogue Node", string.Empty);
+                    var nodePos = this.contentViewContainer.WorldToLocal(a.eventInfo.mousePosition);
                     node.SetPosition(new Rect(nodePos, nodeSize));
                     AddElement(node);
+                    Debug.Log(nodePos);
+                    
+                    
                 });
             }
             if (evt.target is GraphView)
             {
-                evt.menu.AppendAction("Create Choice Node", delegate (DropdownMenuAction a) {
+                evt.menu.AppendAction("Create Choice Node", delegate (DropdownMenuAction a)
+                {
                     var node = CreateChoiceNode("Choice Node");
-                    var nodePos = a.eventInfo.mousePosition;
+                    var nodePos = this.contentViewContainer.WorldToLocal(a.eventInfo.mousePosition);
                     node.SetPosition(new Rect(nodePos, nodeSize));
                     AddElement(node);
+                    Debug.Log(nodePos);
                 });
             }
             base.BuildContextualMenu(evt);
         }
+
         private Port CreatePort(DialogueNode node, Direction direction, Port.Capacity capacity = Port.Capacity.Single)
         {
             return node.InstantiatePort(Orientation.Horizontal,direction, capacity, typeof(string)) ;
@@ -64,8 +67,11 @@ namespace Salt.DialogueSystem.Editor
         {
             return node.InstantiatePort(Orientation.Horizontal,direction, capacity, typeof(string)) ;
         }
+
+       
         private DialogueNode GenerateEntryPoint()
         {
+            
             var node = new DialogueNode()
             {
                 title = "Entry Point",
@@ -79,26 +85,32 @@ namespace Salt.DialogueSystem.Editor
 
             node.capabilities &= ~Capabilities.Movable;
             node.capabilities &= ~Capabilities.Deletable;
+
+
             node.outputContainer.Add(port);
             node.SetPosition(new Rect(100,100,0,0));
             node.RefreshPorts();
             node.RefreshExpandedState();
             return node;
         }
-        public DialogueNode CreateDialogueNode(string nodeName, string lineValue, Character chara)
+
+
+
+        public DialogueNode CreateLineNode(string nodeName, string lineValue)
         {
             var node = new DialogueNode
             {
                 title = nodeName,
-                Guid = Guid.NewGuid().ToString(),
+                Guid = Guid.NewGuid().ToString()
+
             };
 
             var inputPort = CreatePort(node, Direction.Input, Port.Capacity.Multi);
             inputPort.portName = "Prev";
             node.inputContainer.Add(inputPort);
+
             var outputPort = CreatePort(node, Direction.Output, Port.Capacity.Single);
             outputPort.portName = "Next";
-            
             node.outputContainer.Add(outputPort);
 
             
@@ -106,7 +118,7 @@ namespace Salt.DialogueSystem.Editor
            var LogButton = new Button(() =>
             {
                 //node.Questions.ForEach(e => Debug.Log($"<color=red>{e}</color>"));
-                //var util = DataUtilities.GetInstance(this);
+                var util = DataUtilities.GetInstance(this);
             })
             {
                 text = "Log Data"
@@ -114,17 +126,7 @@ namespace Salt.DialogueSystem.Editor
             node.titleButtonContainer.Add(LogButton);
             ///End Log Button
 
-            var characterField = new ObjectField("Character")
-            {
-                objectType = typeof(Character),
-                value = chara
-            };
-            node.Character = chara;
-            characterField.RegisterValueChangedCallback(e =>
-            {
-                node.Character = e.newValue as Character;
-            }
-            );
+
             var sentenceText = new TextField
             {
                 value = lineValue,
@@ -135,8 +137,6 @@ namespace Salt.DialogueSystem.Editor
             sentenceText.RegisterValueChangedCallback(e => {
                 node.Text = e.newValue;
             });
-
-            node.inputContainer.Add(characterField);
             node.mainContainer.Add(sentenceText);
             node.RefreshPorts();
             node.RefreshExpandedState();
@@ -146,6 +146,7 @@ namespace Salt.DialogueSystem.Editor
             return node;
             
         }
+
         public ChoiceNode CreateChoiceNode(string nodeName)
         {
             var node = new ChoiceNode
@@ -161,13 +162,10 @@ namespace Salt.DialogueSystem.Editor
             inputPort.portName = "Prev";
             node.inputContainer.Add(inputPort);
 
-            var choiceButton = new Button(() =>
-            {
+            var choiceButton = new Button(() => {
                 AddChoicePort(node, string.Empty);
-            })
-            {
-                text = "Add Branch"
-            };
+            });
+            choiceButton.text = "Add Branch";
             node.titleButtonContainer.Add(choiceButton);
 
            
@@ -190,6 +188,8 @@ namespace Salt.DialogueSystem.Editor
             return node;
 
         }
+
+
         public void AddChoicePort(ChoiceNode node, string questionValue)
         {
             var port = CreatePort(node, Direction.Output);
@@ -216,14 +216,16 @@ namespace Salt.DialogueSystem.Editor
             node.RefreshExpandedState();
 
         }
+
         public void AddDialogueNode(string nodeName)
         {
-            AddElement(CreateDialogueNode(nodeName, string.Empty, null));
+            AddElement(CreateLineNode(nodeName, string.Empty));
         } 
         public void AddChoiceNode(string nodeName)
         {
             AddElement(CreateChoiceNode(nodeName));
         }
+
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
         {
             var compatiblePorts = new List<Port>();
@@ -232,6 +234,8 @@ namespace Salt.DialogueSystem.Editor
             });
             return compatiblePorts;
         }
+
+        
     }
 
 }

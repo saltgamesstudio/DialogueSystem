@@ -9,10 +9,11 @@ using Salt.DialogueSystem.Runtime;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.EditorTools;
 using UnityEditor.ProjectWindowCallback;
+using System.Runtime.CompilerServices;
 
 namespace Salt.DialogueSystem.Editor
 {
-    public class DialogueEditor : EditorWindow
+    public class DialogueEditor : GraphViewEditorWindow
     {
         private static string path = "Assets/Salt Dialogue/New Dialogues";
         private static DialogueContainer container;
@@ -31,7 +32,7 @@ namespace Salt.DialogueSystem.Editor
                 OpenWindow();
                 if (container is DialogueContainer)
                 {
-                    DataUtilities.GetInstance(graph, container).LoadGraph();
+                    DataUtilities.GetInstance(graph).LoadGraph(container);
                 }
                 return true;
             }
@@ -80,7 +81,7 @@ namespace Salt.DialogueSystem.Editor
 
             var saveButton = new Button(() =>
             {
-                var saveUtility = DataUtilities.GetInstance(graph, container);
+                var saveUtility = DataUtilities.GetInstance(graph);
                 saveUtility.SaveGraph(path);
             })
             {
@@ -91,11 +92,12 @@ namespace Salt.DialogueSystem.Editor
             toolbar.Add(createChoiceNodeButton);
             toolbar.Add(saveButton);
 
-
             
             
             rootVisualElement.Add(toolbar);
         }
+
+       
 
         private void GenerateBlackBoard()
         {
@@ -108,7 +110,7 @@ namespace Salt.DialogueSystem.Editor
             
             blackboard.SetPosition(new Rect(10, 30, 200, 300));
             graph.Add(blackboard);
-            graph.Blackboard = blackboard;
+            //graph.Blackboard = blackboard;
 
         }
         private void OnDisable()
