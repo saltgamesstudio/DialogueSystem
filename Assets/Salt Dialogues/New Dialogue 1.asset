@@ -1,0 +1,142 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ec1617398e61f340a4bce9892911f2a, type: 3}
+  m_Name: New Dialogue 1
+  m_EditorClassIdentifier: 
+  Nodes:
+  - Guid: 4cbbcab9-47a8-45e5-af26-edd3f08e8c32
+    Position: {x: 100, y: 100}
+    Character: {fileID: 0}
+    isEntryPoint: 1
+    isChoiceNode: 0
+    TextDatas: []
+  - Guid: f39550c3-1f68-448e-b38e-849434978774
+    Position: {x: 800, y: 209}
+    Character: {fileID: 0}
+    isEntryPoint: 0
+    isChoiceNode: 1
+    TextDatas:
+    - 
+    - 
+    - 
+  - Guid: 6fdf72cc-f0ad-4bd3-bcbb-a5b3fb300d23
+    Position: {x: 316, y: 26}
+    Character: {fileID: 0}
+    isEntryPoint: 0
+    isChoiceNode: 0
+    TextDatas:
+    - 
+  - Guid: 566bcdb7-af5e-4797-bf03-90384d5b82c9
+    Position: {x: 1229, y: 446}
+    Character: {fileID: 0}
+    isEntryPoint: 0
+    isChoiceNode: 0
+    TextDatas:
+    - 
+  - Guid: 6166fcdc-5009-4bac-bed5-c576233bb3fa
+    Position: {x: 1660, y: 230}
+    Character: {fileID: 0}
+    isEntryPoint: 0
+    isChoiceNode: 1
+    TextDatas:
+    - 
+    - 
+  - Guid: 690ab100-14c0-4dff-98c5-1c977b5d5069
+    Position: {x: 2135, y: 240}
+    Character: {fileID: 0}
+    isEntryPoint: 0
+    isChoiceNode: 0
+    TextDatas:
+    - 
+  - Guid: ebda6c40-7cc4-41ad-9752-91651a3d6997
+    Position: {x: 1229, y: 89}
+    Character: {fileID: 0}
+    isEntryPoint: 0
+    isChoiceNode: 0
+    TextDatas:
+    - 
+  - Guid: 823d29f8-be58-4c4a-9eb2-ee528b6d0f08
+    Position: {x: 1229, y: 254}
+    Character: {fileID: 0}
+    isEntryPoint: 0
+    isChoiceNode: 0
+    TextDatas:
+    - 
+  - Guid: 26558d29-5cd7-4459-9188-7b5a1c41d960
+    Position: {x: 2464, y: 238}
+    Character: {fileID: 0}
+    isEntryPoint: 0
+    isChoiceNode: 0
+    TextDatas:
+    - 
+  - Guid: d1889ed0-04e7-4d30-a1c9-54862777888c
+    Position: {x: 2744, y: 133}
+    Character: {fileID: 0}
+    isEntryPoint: 0
+    isChoiceNode: 1
+    TextDatas:
+    - 
+    - 
+  - Guid: c967b527-7e90-45a9-80bf-aac0b8c63491
+    Position: {x: 3277, y: 182}
+    Character: {fileID: 0}
+    isEntryPoint: 0
+    isChoiceNode: 0
+    TextDatas:
+    - 
+  - Guid: 7d161b36-b76b-404b-90b4-454f5184b6a0
+    Position: {x: 3297, y: 402}
+    Character: {fileID: 0}
+    isEntryPoint: 0
+    isChoiceNode: 0
+    TextDatas:
+    - 
+  - Guid: 78f05ff8-f02b-4032-bb5d-e8d3e3261c6d
+    Position: {x: 3661, y: 339}
+    Character: {fileID: 0}
+    isEntryPoint: 0
+    isChoiceNode: 0
+    TextDatas:
+    - 
+  Edges:
+  - Prev: f39550c3-1f68-448e-b38e-849434978774
+    Next: ebda6c40-7cc4-41ad-9752-91651a3d6997
+  - Prev: f39550c3-1f68-448e-b38e-849434978774
+    Next: 823d29f8-be58-4c4a-9eb2-ee528b6d0f08
+  - Prev: f39550c3-1f68-448e-b38e-849434978774
+    Next: 566bcdb7-af5e-4797-bf03-90384d5b82c9
+  - Prev: 4cbbcab9-47a8-45e5-af26-edd3f08e8c32
+    Next: 6fdf72cc-f0ad-4bd3-bcbb-a5b3fb300d23
+  - Prev: 6fdf72cc-f0ad-4bd3-bcbb-a5b3fb300d23
+    Next: f39550c3-1f68-448e-b38e-849434978774
+  - Prev: ebda6c40-7cc4-41ad-9752-91651a3d6997
+    Next: 6166fcdc-5009-4bac-bed5-c576233bb3fa
+  - Prev: 823d29f8-be58-4c4a-9eb2-ee528b6d0f08
+    Next: 6166fcdc-5009-4bac-bed5-c576233bb3fa
+  - Prev: 566bcdb7-af5e-4797-bf03-90384d5b82c9
+    Next: 6166fcdc-5009-4bac-bed5-c576233bb3fa
+  - Prev: 6166fcdc-5009-4bac-bed5-c576233bb3fa
+    Next: 690ab100-14c0-4dff-98c5-1c977b5d5069
+  - Prev: 6166fcdc-5009-4bac-bed5-c576233bb3fa
+    Next: 690ab100-14c0-4dff-98c5-1c977b5d5069
+  - Prev: 690ab100-14c0-4dff-98c5-1c977b5d5069
+    Next: 26558d29-5cd7-4459-9188-7b5a1c41d960
+  - Prev: 26558d29-5cd7-4459-9188-7b5a1c41d960
+    Next: d1889ed0-04e7-4d30-a1c9-54862777888c
+  - Prev: d1889ed0-04e7-4d30-a1c9-54862777888c
+    Next: c967b527-7e90-45a9-80bf-aac0b8c63491
+  - Prev: d1889ed0-04e7-4d30-a1c9-54862777888c
+    Next: 7d161b36-b76b-404b-90b4-454f5184b6a0
+  - Prev: c967b527-7e90-45a9-80bf-aac0b8c63491
+    Next: 78f05ff8-f02b-4032-bb5d-e8d3e3261c6d
+  - Prev: 7d161b36-b76b-404b-90b4-454f5184b6a0
+    Next: 78f05ff8-f02b-4032-bb5d-e8d3e3261c6d

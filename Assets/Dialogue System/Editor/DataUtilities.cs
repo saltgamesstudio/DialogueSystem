@@ -143,7 +143,7 @@ namespace Salt.DialogueSystem.Editor
                 }
                 else
                 {
-                    DialogueNode temp = graph.CreateLineNode("Dialogue Node", node.TextDatas[0]); ;
+                    DialogueNode temp = graph.CreateDialogueNode("Dialogue Node", node.TextDatas[0]); ;
                     temp.Guid = node.Guid;
                     temp.SetPosition(new Rect(node.Position, graph.nodeSize));
                     graph.AddElement(temp);
@@ -153,22 +153,31 @@ namespace Salt.DialogueSystem.Editor
         private void GenerateEdgeFromContainer(DialogueContainer dialogueContainer)
         {
             if (dialogueContainer.Edges.Count < 1) return;
-
-            for (var i = 0; i < Nodes.Count; i++)
+            int choiceCounter = 0;
+            foreach (var edge in dialogueContainer.Edges)
             {
-                var connections = dialogueContainer.Edges.Where(x => x.Prev == Nodes[i].Guid).ToList();
-                foreach (var c in connections)
-                {
-                    var prevNode = Nodes.Find(n => n.Guid == c.Prev);
-                    var nextNode = Nodes.Find(n => n.Guid == c.Next);
-                    var outputPort = prevNode.outputContainer.Q<Port>();
-                    var inputPort = nextNode.inputContainer.Q<Port>();
+                var prevNode = Nodes.Find(n => n.Guid == edge.Prev);
+                var nextNode = Nodes.Find(n => n.Guid == edge.Next);
+                var outputPort = prevNode.outputContainer.Q<Port>();
+                var inputPort = nextNode.inputContainer.Q<Port>();
 
-                    //Debug.Log($"CONNECT {prevNode.Guid} <color=red>TO</color> {nextNode.Guid}");
-                    ConnectNodes(outputPort, inputPort);
+                if (prevNode.isChoiceNode)
+                {
+                    var listPort = prevNode.outputContainer.Query<Port>().ToList();
+                    outputPort = listPort[choiceCounter];
+                    choiceCounter++;
                 }
+                else
+                {
+                    choiceCounter = 0;
+                }
+                ConnectNodes(outputPort, inputPort);
             }
         }
+           
+                
+                
+        
 
         private void ConnectNodes(Port outputSocket, Port inputSocket)
         {

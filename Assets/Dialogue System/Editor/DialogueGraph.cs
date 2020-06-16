@@ -6,15 +6,13 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Salt.DialogueSystem.Data;
+using UnityEditor.UIElements;
 
 namespace Salt.DialogueSystem.Editor
 {
     public class DialogueGraph : GraphView
     {
         public readonly Vector2 nodeSize = new Vector2(150,200);
-        public delegate void Logger(string a);
-        private Logger LogToConsole;
-        private ContextMenu menu;
         
         public DialogueGraph()
         {
@@ -24,9 +22,9 @@ namespace Salt.DialogueSystem.Editor
             this.AddManipulator(new SelectionDragger());
             this.AddManipulator(new ContentDragger());
             this.AddManipulator(new RectangleSelector());
-            AddElement(GenerateEntryPoint());
             var grid = new GridBackground();
             Insert(0, grid);
+            AddElement(GenerateEntryPoint());
         }
 
         public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
@@ -35,14 +33,10 @@ namespace Salt.DialogueSystem.Editor
             {
                 evt.menu.AppendAction("Create Dialogue Node", delegate (DropdownMenuAction a)
                 {
-                        
-                    var node = CreateLineNode("Dialogue Node", string.Empty);
+                    var node = CreateDialogueNode("Dialogue Node", string.Empty);
                     var nodePos = this.contentViewContainer.WorldToLocal(a.eventInfo.mousePosition);
                     node.SetPosition(new Rect(nodePos, nodeSize));
                     AddElement(node);
-                    Debug.Log(nodePos);
-                    
-                    
                 });
             }
             if (evt.target is GraphView)
@@ -53,7 +47,6 @@ namespace Salt.DialogueSystem.Editor
                     var nodePos = this.contentViewContainer.WorldToLocal(a.eventInfo.mousePosition);
                     node.SetPosition(new Rect(nodePos, nodeSize));
                     AddElement(node);
-                    Debug.Log(nodePos);
                 });
             }
             base.BuildContextualMenu(evt);
@@ -80,7 +73,6 @@ namespace Salt.DialogueSystem.Editor
                 isEntryPoint = true
             };
             var port = CreatePort(node, Direction.Output);
-            
             port.portName = "Next";
 
             node.capabilities &= ~Capabilities.Movable;
@@ -96,21 +88,24 @@ namespace Salt.DialogueSystem.Editor
 
 
 
-        public DialogueNode CreateLineNode(string nodeName, string lineValue)
+        public DialogueNode CreateDialogueNode(string title, string sentence, Character character = null)
         {
             var node = new DialogueNode
             {
-                title = nodeName,
+                title = title,
                 Guid = Guid.NewGuid().ToString()
 
             };
 
             var inputPort = CreatePort(node, Direction.Input, Port.Capacity.Multi);
             inputPort.portName = "Prev";
+            inputPort.name = "Port";
             node.inputContainer.Add(inputPort);
 
             var outputPort = CreatePort(node, Direction.Output, Port.Capacity.Single);
             outputPort.portName = "Next";
+            outputPort.name = "Port";
+
             node.outputContainer.Add(outputPort);
 
             
@@ -129,7 +124,7 @@ namespace Salt.DialogueSystem.Editor
 
             var sentenceText = new TextField
             {
-                value = lineValue,
+                value = sentence,
                 multiline = true,
                 
             };
@@ -137,6 +132,13 @@ namespace Salt.DialogueSystem.Editor
             sentenceText.RegisterValueChangedCallback(e => {
                 node.Text = e.newValue;
             });
+            var charaField = new ObjectField
+            {
+                objectType = typeof(Character),
+                value = character,
+                
+            };
+            node.mainContainer.Add(charaField);
             node.mainContainer.Add(sentenceText);
             node.RefreshPorts();
             node.RefreshExpandedState();
@@ -144,22 +146,20 @@ namespace Salt.DialogueSystem.Editor
 
             
             return node;
-            
         }
 
-        public ChoiceNode CreateChoiceNode(string nodeName)
+        public ChoiceNode CreateChoiceNode(string title)
         {
             var node = new ChoiceNode
             {
-                title = nodeName,
+                title = title,
                 Guid = Guid.NewGuid().ToString(),
                 isChoiceNode = true,
-
             };
-            
             
             var inputPort = CreatePort(node, Direction.Input, Port.Capacity.Multi);
             inputPort.portName = "Prev";
+
             node.inputContainer.Add(inputPort);
 
             var choiceButton = new Button(() => {
@@ -186,7 +186,6 @@ namespace Salt.DialogueSystem.Editor
             ///End Log Button
 
             return node;
-
         }
 
 
@@ -219,7 +218,7 @@ namespace Salt.DialogueSystem.Editor
 
         public void AddDialogueNode(string nodeName)
         {
-            AddElement(CreateLineNode(nodeName, string.Empty));
+            AddElement(CreateDialogueNode(nodeName, string.Empty));
         } 
         public void AddChoiceNode(string nodeName)
         {
