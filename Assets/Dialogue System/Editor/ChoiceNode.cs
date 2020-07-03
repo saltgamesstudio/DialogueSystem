@@ -10,7 +10,6 @@ namespace Salt.DialogueSystem.Editor
     public class ChoiceNode : CustomNode
     {
         public int choiceCount = 0;
-        public Dictionary<int, string> QuestionDict = new Dictionary<int, string>();
     }
 
 }

@@ -1,19 +1,24 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿
 namespace Salt.DialogueSystem.Data
 {
-    [CreateAssetMenu(fileName = "New Character", menuName = "Salt Studio/Character")]
-    public class Character : ScriptableObject
+    [UnityEngine.CreateAssetMenu(fileName = "New Character", menuName = "Salt Studio/Character")]
+    [System.Serializable]
+    public class Character : UnityEngine.ScriptableObject
     {
-        public string charaName;
-
-        //bunch of sprite for additional expression according to enum Expression in Line class
-        public Sprite idle;
-
-
-        public string description;
+        public string Name;
+        public CharacterSprites Sprites;
 
     }
+    [System.Serializable]
+    public class CharacterSprites
+    {
+        public UnityEngine.Sprite Body;
+        public UnityEngine.Sprite Idle;
+        public UnityEngine.Sprite Surprised;
+        public UnityEngine.Sprite Embarrassed;
+        public UnityEngine.Sprite Angry;
+        public UnityEngine.Sprite Sad;
+        public UnityEngine.Sprite Happy;
+    }
 }
+

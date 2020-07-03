@@ -5,7 +5,7 @@ using UnityEngine.Events;
 using TMPro;
 using System.Collections.Generic;
 using Salt.DialogueSystem.Data;
-using Salt.DialogueSystem.Runtime;
+using UnityEngine.UI;
 
 public enum Emotion {HAPPY, SAD, ANGRY }
 [Serializable] public class ExpressionEvent : UnityEvent<Emotion> { };
@@ -30,8 +30,8 @@ public class DialogueManager : MonoBehaviour
     public static DialogueManager instance;
     [SerializeField] private Conversation conversation = null;
     private LogManager log;
+    public Character characterData;
 
-    [SerializeField] private DialogueContainer  container = null;
 
     [SerializeField] private bool isTyping;
 
@@ -39,7 +39,7 @@ public class DialogueManager : MonoBehaviour
     //typing speed in character per second
     [SerializeField][Tooltip("In Character per Second")] private float defaultTypingSpeed = 20;
 
-    [SerializeField] private Sprite charaSprite;
+    [SerializeField] private Image expressionSprite;
     [SerializeField] private TMP_Text lineText;
     [SerializeField] private TMP_Text nameText;
 
@@ -182,6 +182,42 @@ public class DialogueManager : MonoBehaviour
             {
                 return new WaitForSeconds(float.Parse(tag.Split('=')[1]));
             }
+            if (tag.StartsWith("expression="))
+            {
+                var emosi = tag.Split('=')[1].ToLower();
+                Sprite sprite = characterData.Sprites.Idle;
+                switch (emosi)
+                {
+                    case "kaget":
+                        {
+                            sprite = characterData.Sprites.Surprised;
+                            break;
+                        }
+                    case "malu":
+                        {
+                            sprite = characterData.Sprites.Embarrassed;
+                            break;
+                        }
+                    case "marah":
+                        {
+                            sprite = characterData.Sprites.Angry;
+                            break;
+                        }
+                    case "sedih":
+                        {
+                            sprite = characterData.Sprites.Sad;
+                            break;
+                        }
+                    case "senang":
+                        {
+                            sprite = characterData.Sprites.Happy;
+                            break;
+                        }
+                }
+                expressionSprite.sprite = sprite;
+                return null;
+            }
+           
         }
 
         //onCustomTag.Invoke(tag);

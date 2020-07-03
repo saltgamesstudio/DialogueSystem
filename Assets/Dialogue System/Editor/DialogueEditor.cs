@@ -5,18 +5,18 @@ using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
-using Salt.DialogueSystem.Runtime;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.EditorTools;
 using UnityEditor.ProjectWindowCallback;
 using System.Runtime.CompilerServices;
+using Salt.DialogueSystem.Data;
 
 namespace Salt.DialogueSystem.Editor
 {
     public class DialogueEditor : GraphViewEditorWindow
     {
         private static string path = "Assets/Salt Dialogue/New Dialogues";
-        private static DialogueContainer container;
+        private static DialogueData container;
         private static DialogueGraph graph;
 
         
@@ -26,13 +26,13 @@ namespace Salt.DialogueSystem.Editor
         {
           
             path = AssetDatabase.GetAssetPath(instanceID);
-            container = AssetDatabase.LoadAssetAtPath<DialogueContainer>(path);
+            container = AssetDatabase.LoadAssetAtPath<DialogueData>(path);
             if (container != null)
             {
                 OpenWindow();
-                if (container is DialogueContainer)
+                if (container is DialogueData)
                 {
-                    DataUtilities.GetInstance(graph).LoadGraph(container);
+                    DataUtilities.GetInstance(graph, container).LoadGraph();
                 }
                 return true;
             }
@@ -81,7 +81,7 @@ namespace Salt.DialogueSystem.Editor
 
             var saveButton = new Button(() =>
             {
-                var saveUtility = DataUtilities.GetInstance(graph);
+                var saveUtility = DataUtilities.GetInstance(graph, container);
                 saveUtility.SaveGraph(path);
             })
             {

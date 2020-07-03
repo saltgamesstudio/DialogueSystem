@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 641f802598edc3f42a12489ecb325397, type: 3}
+  m_Name: Better Dialogue 1
+  m_EditorClassIdentifier: 
+  Nodes:
+  - Guid: a59b9eeb-684d-4b69-9191-aab19ae556e1
+    JsonData: 
+    Character: {fileID: 0}
+    Text: 
+    Next: b1c7ee93-4b01-4d0a-8711-07bbc86de6f9
+    isChoiceNode: 0
+    isEntryPoint: 1
+    Choices: []
+  - Guid: b1c7ee93-4b01-4d0a-8711-07bbc86de6f9
+    JsonData: '{"x":347.0,"y":68.0}'
+    Character: {fileID: 11400000, guid: f06eec654b7667e4d97fb0cf2f97e2ec, type: 2}
+    Text: Hai gays, <pause=0.5> Namaku Alaric Ray Altica Yoroshiku
+    Next: 22e1d450-1e06-4ce5-835e-ffa252d04ede
+    isChoiceNode: 0
+    isEntryPoint: 0
+    Choices: []
+  - Guid: 22e1d450-1e06-4ce5-835e-ffa252d04ede
+    JsonData: '{"x":898.0,"y":64.0}'
+    Character: {fileID: 11400000, guid: f06eec654b7667e4d97fb0cf2f97e2ec, type: 2}
+    Text: Gimana aku ganteng kan? <pause=0.5> <expression=senang>Hehehe
+    Next: 3a6fcf1f-2427-44a1-a49a-a9206599fd02
+    isChoiceNode: 0
+    isEntryPoint: 0
+    Choices: []
+  - Guid: 3a6fcf1f-2427-44a1-a49a-a9206599fd02
+    JsonData: '{"x":1515.0,"y":46.0}'
+    Character: {fileID: 11400000, guid: f06eec654b7667e4d97fb0cf2f97e2ec, type: 2}
+    Text: <expression=marah>Ini muka marahku.<pause=0.5> Gimana serem kan?<pause=0.5><expression=senang>
+      Hehehe
+    Next: 865aa144-7e34-411d-98d7-9b323c18de50
+    isChoiceNode: 0
+    isEntryPoint: 0
+    Choices: []
+  - Guid: 865aa144-7e34-411d-98d7-9b323c18de50
+    JsonData: '{"x":2338.0,"y":48.0}'
+    Character: {fileID: 11400000, guid: f06eec654b7667e4d97fb0cf2f97e2ec, type: 2}
+    Text: <expression=malu>Ini muka maluku.<pause=0.5> <expression=senang> Gimana
+      imut kan? Hehehe
+    Next: 81c1b484-aea4-47e8-8308-33598658dca1
+    isChoiceNode: 0
+    isEntryPoint: 0
+    Choices: []
+  - Guid: 81c1b484-aea4-47e8-8308-33598658dca1
+    JsonData: '{"x":3243.0,"y":55.0}'
+    Character: {fileID: 11400000, guid: f06eec654b7667e4d97fb0cf2f97e2ec, type: 2}
+    Text: <expression=kaget>Wow, aku kaget.<pause=0.5> <expression=senang> Hehehe
+    Next: 50867a9f-5e9e-4698-8d2e-17be8d5bc6c2
+    isChoiceNode: 0
+    isEntryPoint: 0
+    Choices: []
+  - Guid: 50867a9f-5e9e-4698-8d2e-17be8d5bc6c2
+    JsonData: '{"x":4103.0,"y":30.0}'
+    Character: {fileID: 0}
+    Text: 
+    Next: 2c415f81-76c2-4c43-bad6-1a3a7d79fe2d
+    isChoiceNode: 1
+    isEntryPoint: 0
+    Choices:
+    - Next: 2c415f81-76c2-4c43-bad6-1a3a7d79fe2d
+      Question: 
+    - Next: 2c415f81-76c2-4c43-bad6-1a3a7d79fe2d
+      Question: 
+  - Guid: 2c415f81-76c2-4c43-bad6-1a3a7d79fe2d
+    JsonData: '{"x":4549.0,"y":22.0}'
+    Character: {fileID: 11400000, guid: f06eec654b7667e4d97fb0cf2f97e2ec, type: 2}
+    Text: End
+    Next: 
+    isChoiceNode: 0
+    isEntryPoint: 0
+    Choices: []

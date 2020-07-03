@@ -13,7 +13,6 @@ namespace Salt.DialogueSystem.Editor
     public class DialogueGraph : GraphView
     {
         public readonly Vector2 nodeSize = new Vector2(150,200);
-        
         public DialogueGraph()
         {
             styleSheets.Add(Resources.Load<StyleSheet>("EditorStyle"));
@@ -23,6 +22,7 @@ namespace Salt.DialogueSystem.Editor
             this.AddManipulator(new ContentDragger());
             this.AddManipulator(new RectangleSelector());
             var grid = new GridBackground();
+            
             Insert(0, grid);
             AddElement(GenerateEntryPoint());
         }
@@ -52,13 +52,12 @@ namespace Salt.DialogueSystem.Editor
             base.BuildContextualMenu(evt);
         }
 
-        private Port CreatePort(DialogueNode node, Direction direction, Port.Capacity capacity = Port.Capacity.Single)
+       
+
+        private Port CreatePort(Direction direction, Port.Capacity capacity = Port.Capacity.Single)
         {
-            return node.InstantiatePort(Orientation.Horizontal,direction, capacity, typeof(string)) ;
-        } 
-        private Port CreatePort(ChoiceNode node, Direction direction, Port.Capacity capacity = Port.Capacity.Single)
-        {
-            return node.InstantiatePort(Orientation.Horizontal,direction, capacity, typeof(string)) ;
+            var port = DialoguePort.Create(direction, capacity);
+            return port;
         }
 
        
@@ -72,12 +71,10 @@ namespace Salt.DialogueSystem.Editor
                 Text = "Entry Point",
                 isEntryPoint = true
             };
-            var port = CreatePort(node, Direction.Output);
+            var port = CreatePort(Direction.Output);
             port.portName = "Next";
-
             node.capabilities &= ~Capabilities.Movable;
             node.capabilities &= ~Capabilities.Deletable;
-
 
             node.outputContainer.Add(port);
             node.SetPosition(new Rect(100,100,0,0));
@@ -88,7 +85,7 @@ namespace Salt.DialogueSystem.Editor
 
 
 
-        public DialogueNode CreateDialogueNode(string title, string sentence, Character character = null)
+        public DialogueNode CreateDialogueNode(string title, string sentence, Character character = null, string next = "")
         {
             var node = new DialogueNode
             {
@@ -97,23 +94,22 @@ namespace Salt.DialogueSystem.Editor
 
             };
 
-            var inputPort = CreatePort(node, Direction.Input, Port.Capacity.Multi);
+
+            var inputPort = CreatePort(Direction.Input, Port.Capacity.Multi);
             inputPort.portName = "Prev";
             inputPort.name = "Port";
-            node.inputContainer.Add(inputPort);
 
-            var outputPort = CreatePort(node, Direction.Output, Port.Capacity.Single);
+            var outputPort = CreatePort(Direction.Output, Port.Capacity.Single);
             outputPort.portName = "Next";
             outputPort.name = "Port";
+            (outputPort as DialoguePort).Next = next;
 
-            node.outputContainer.Add(outputPort);
 
             
             ///Begin Log Button, if its Delete Later
            var LogButton = new Button(() =>
             {
                 //node.Questions.ForEach(e => Debug.Log($"<color=red>{e}</color>"));
-                var util = DataUtilities.GetInstance(this);
             })
             {
                 text = "Log Data"
@@ -138,8 +134,15 @@ namespace Salt.DialogueSystem.Editor
                 value = character,
                 
             };
+            charaField.RegisterValueChangedCallback(e=> {
+                node.Character = e.newValue as Character;
+            });
+            node.Character = charaField.value as Character;
             node.mainContainer.Add(charaField);
             node.mainContainer.Add(sentenceText);
+
+            node.inputContainer.Add(inputPort);
+            node.outputContainer.Add(outputPort);
             node.RefreshPorts();
             node.RefreshExpandedState();
             node.SetPosition(new Rect(Vector2.zero, nodeSize));
@@ -157,7 +160,7 @@ namespace Salt.DialogueSystem.Editor
                 isChoiceNode = true,
             };
             
-            var inputPort = CreatePort(node, Direction.Input, Port.Capacity.Multi);
+            var inputPort = CreatePort(Direction.Input, Port.Capacity.Multi);
             inputPort.portName = "Prev";
 
             node.inputContainer.Add(inputPort);
@@ -174,27 +177,24 @@ namespace Salt.DialogueSystem.Editor
             var LogButton = new Button(() =>
             {
                 //node.Questions.ForEach(e => Debug.Log($"<color=red>{e}</color>"));
-                foreach (var i in node.QuestionDict)
-                {
-                    Debug.Log($"Choice {i.Key} : {i.Value}");
-                }
+                
             })
             {
                 text = "Log Data"
             };
             node.titleButtonContainer.Add(LogButton);
             ///End Log Button
-
+            
             return node;
         }
 
 
-        public void AddChoicePort(ChoiceNode node, string questionValue)
+        public void AddChoicePort(ChoiceNode node, string questionValue, string next = "")
         {
-            var port = CreatePort(node, Direction.Output);
+            var port = CreatePort(Direction.Output);
             int questIndex = node.choiceCount;
-            node.QuestionDict.Add(questIndex, string.Empty);
             port.portName = $"Choice {node.choiceCount}";
+            
            
             var lineText = new TextField
             {
@@ -202,12 +202,12 @@ namespace Salt.DialogueSystem.Editor
                 multiline = true
             };
             lineText.value = questionValue;
+            (port as DialoguePort).Question = questionValue;
             lineText.RegisterValueChangedCallback( e =>{
-                node.QuestionDict[questIndex] = e.newValue;
+                (port as DialoguePort).Question = e.newValue;
             });
-            node.QuestionDict[questIndex] = lineText.value;
+            (port as DialoguePort).Next = next;
             node.choiceCount++;
-            
             node.outputContainer.Add(port);
             node.outputContainer.Add(lineText);
             
@@ -229,7 +229,7 @@ namespace Salt.DialogueSystem.Editor
         {
             var compatiblePorts = new List<Port>();
             ports.ForEach((port) => {
-                if (startPort != port && startPort.node != port.node) compatiblePorts.Add(port);
+                if (startPort != port && startPort.node != port.node && startPort.direction != port.direction) compatiblePorts.Add(port);
             });
             return compatiblePorts;
         }

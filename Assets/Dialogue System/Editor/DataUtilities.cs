@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using Salt.DialogueSystem.Runtime;
 using Salt.DialogueSystem.Data;
 using System;
 using System.Linq;
@@ -9,13 +8,14 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine.UIElements;
 using System.IO;
+using UnityEngine.Analytics;
 
 namespace Salt.DialogueSystem.Editor
 {
     public class DataUtilities
     {
         private DialogueGraph graph;
-        private DialogueContainer container = null;
+        private DialogueData dataContainer = null;
 
         private List<Edge> Edges => graph.edges.ToList();
         private List<CustomNode> Nodes
@@ -39,88 +39,89 @@ namespace Salt.DialogueSystem.Editor
         private static DataUtilities instance;
 
 
-        public static DataUtilities GetInstance(DialogueGraph graph)
+        public static DataUtilities GetInstance(DialogueGraph graph, DialogueData data)
         {
             return new DataUtilities
             {
-                graph = graph
+                graph = graph,
+                dataContainer = data
+             
             };
         }
-        public void GetGraphData(DialogueContainer dialogueContainer)
+
+        public void GetGraphData()
         {
             if (Edges.Count == 0)
             {
                 EditorUtility.DisplayDialog("No Dialogue Connection", "Make Sure You Have at Least 1 Connection Between Dialogues", "OK");
                 return;
             }
-            foreach (var edge in Edges)
-            {
-                if (edge.input != null)
-                {
-                    dialogueContainer.Edges.Add(new EdgeData
-                    {
-                        Prev = (edge.output.node as CustomNode).Guid,
-                        Next = (edge.input.node as CustomNode).Guid,
-                    });
-                }
-            }
             foreach (var node in Nodes)
             {
-
+                var json = JsonUtility.ToJson(node.GetPosition().position);
                 if (!node.isEntryPoint)
                 {
                     var data = new NodeData
                     {
                         Guid = node.Guid,
-                        Position = node.GetPosition().position
+                        JsonData = json,
+                        Next = (node.outputContainer.Q<Port>() as DialoguePort).Next
                     };
                     if (node is DialogueNode)
                     {
-                        data.TextDatas.Add((node as DialogueNode).Text);
+                        data.Text = (node as DialogueNode).Text;
+                        data.Character = (node as DialogueNode).Character;
                     }
                     else
                     {
-                        List<string> temp = new List<string>();
-                        foreach (var question in (node as ChoiceNode).QuestionDict)
+                        var listPort = node.outputContainer.Query<Port>().ToList();
+                        foreach (var port in listPort)
                         {
-                            temp.Add(question.Value);
+                            var outputPort = port as DialoguePort;
+                            ChoiceData tmpChoice = new ChoiceData
+                            {
+                                Next = outputPort.Next,
+                                Question = outputPort.Question
+                            };
+                            data.Choices.Add(tmpChoice);
                         }
-                        data.TextDatas = temp;
+                        
                         data.isChoiceNode = true;
                     }
-                    dialogueContainer.Nodes.Add(data);
+
+                    dataContainer.Nodes.Add(data);
                 }
-                else
+                else if(node.isEntryPoint)
                 {
-                    var data = new NodeData
+                    var tmp = new NodeData
                     {
                         Guid = node.Guid,
-                        Position = node.GetPosition().position,
-                        isEntryPoint = true
+                        isEntryPoint = true,
+                        Next = (node.outputContainer.Q<Port>() as DialoguePort).Next
                     };
-
-                    dialogueContainer.Nodes.Add(data);
+                    dataContainer.Nodes.Add(tmp);
                 }
             }
+
         }
         public void SaveGraph(string path)
         {
-            var dialogueContainerObject = ScriptableObject.CreateInstance<DialogueContainer>();
-            container = dialogueContainerObject;
-            GetGraphData(container);
+            var dialogueContainerObject = ScriptableObject.CreateInstance<DialogueData>();
+            dataContainer = dialogueContainerObject;
+            GetGraphData();
             if (!AssetDatabase.IsValidFolder("Assets/Salt Dialogues"))
             {
                 AssetDatabase.CreateFolder("Assets", "Salt Dialogues");
             }
-            AssetDatabase.CreateAsset(container, path);
+            AssetDatabase.CreateAsset(dataContainer, path);
             AssetDatabase.Refresh();
         }
-        public void LoadGraph(DialogueContainer dialogueContainer)
+        public void LoadGraph()
         {
-            GenerateNodeFromContainer(dialogueContainer);
-            GenerateEdgeFromContainer(dialogueContainer);
+            GenerateNodeFromContainer(dataContainer);
+            GenerateEdgeFromContainer(dataContainer);
         }
-        private void GenerateNodeFromContainer(DialogueContainer dialogueContainer)
+        private void GenerateNodeFromContainer(DialogueData dialogueContainer)
         {
             foreach (var node in dialogueContainer.Nodes)
             {
@@ -128,56 +129,71 @@ namespace Salt.DialogueSystem.Editor
                 {
                     var entryPoint = Nodes.Find(n => n.isEntryPoint);
                     entryPoint.Guid = node.Guid;
+                    (entryPoint.outputContainer.Q<Port>() as DialoguePort).Next = node.Next;
                     continue;
                 }
                 if (node.isChoiceNode)
                 {
                     ChoiceNode temp = graph.CreateChoiceNode("Choice Node");
                     temp.Guid = node.Guid;
-                    foreach (var question in node.TextDatas)
+                    foreach (var choice in node.Choices)
                     {
-                        graph.AddChoicePort(temp as ChoiceNode, question);
+                        graph.AddChoicePort(temp as ChoiceNode, choice.Question, choice.Next);
                     }
-                    temp.SetPosition(new Rect(node.Position, graph.nodeSize));
+                    temp.SetPosition(new Rect(JsonUtility.FromJson<Vector2>(node.JsonData), graph.nodeSize));
                     graph.AddElement(temp);
                 }
                 else
                 {
-                    DialogueNode temp = graph.CreateDialogueNode("Dialogue Node", node.TextDatas[0]); ;
+                    DialogueNode temp = graph.CreateDialogueNode("Dialogue Node", node.Text, node.Character, node.Next); ;
                     temp.Guid = node.Guid;
-                    temp.SetPosition(new Rect(node.Position, graph.nodeSize));
+                    temp.SetPosition(new Rect(JsonUtility.FromJson<Vector2>(node.JsonData), graph.nodeSize));
                     graph.AddElement(temp);
                 }
             }
         }
-        private void GenerateEdgeFromContainer(DialogueContainer dialogueContainer)
+        private void GenerateEdgeFromContainer(DialogueData dialogueContainer)
         {
-            if (dialogueContainer.Edges.Count < 1) return;
-            int choiceCounter = 0;
-            foreach (var edge in dialogueContainer.Edges)
+            if (dialogueContainer.Nodes.Count < 1) return;
+            
+            foreach (var node in dialogueContainer.Nodes)
             {
-                var prevNode = Nodes.Find(n => n.Guid == edge.Prev);
-                var nextNode = Nodes.Find(n => n.Guid == edge.Next);
-                var outputPort = prevNode.outputContainer.Q<Port>();
+                var currentNode = Nodes.Find(n => n.Guid == node.Guid);
+                if(string.IsNullOrEmpty(node.Next) )
+                {
+                    continue;
+                }
+                var nextNode = Nodes.Find(n => n.Guid == node.Next);
+                var outputPort = currentNode.outputContainer.Q<Port>();
                 var inputPort = nextNode.inputContainer.Q<Port>();
 
-                if (prevNode.isChoiceNode)
+                int choiceCounter = 0;
+                if (currentNode.isChoiceNode)
                 {
-                    var listPort = prevNode.outputContainer.Query<Port>().ToList();
-                    outputPort = listPort[choiceCounter];
-                    choiceCounter++;
+
+                    foreach(var choice in node.Choices)
+                    {
+                        var listPort = currentNode.outputContainer.Query<Port>().ToList();
+                        outputPort = listPort[choiceCounter];
+                        inputPort = Nodes.Find(n => n.Guid == choice.Next).inputContainer.Q<Port>();
+                        choiceCounter++;
+                        ConnectNodes(outputPort, inputPort);
+                    }
                 }
                 else
                 {
+
                     choiceCounter = 0;
+                    ConnectNodes(outputPort, inputPort);
                 }
-                ConnectNodes(outputPort, inputPort);
+            
             }
+
         }
-           
-                
-                
-        
+
+
+
+
 
         private void ConnectNodes(Port outputSocket, Port inputSocket)
         {
