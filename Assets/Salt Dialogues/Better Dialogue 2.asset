@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 641f802598edc3f42a12489ecb325397, type: 3}
+  m_Name: Better Dialogue 2
+  m_EditorClassIdentifier: 
+  Nodes:
+  - Guid: 1e94f8fb-6461-4b11-9bde-cbcd85150335
+    JsonData: 
+    Character: {fileID: 0}
+    Text: 
+    Next: bfe6c6b0-6130-40ad-9f37-ee83b521844b
+    isChoiceNode: 0
+    isEntryPoint: 1
+    Choices: []
+    Properties:
+      Background: {fileID: 0}
+      Speaker: {fileID: 0}
+      speakerPosition: 1
+      Conversant1: {fileID: 0}
+      conversant1Position: 0
+      Conversant2: {fileID: 0}
+      conversant2Position: 2
+      Text: 
+  - Guid: bfe6c6b0-6130-40ad-9f37-ee83b521844b
+    JsonData: '{"x":476.0,"y":138.0}'
+    Character: {fileID: 0}
+    Text: 
+    Next: 
+    isChoiceNode: 0
+    isEntryPoint: 0
+    Choices: []
+    Properties:
+      Background: {fileID: 0}
+      Speaker: {fileID: 0}
+      speakerPosition: 1
+      Conversant1: {fileID: 0}
+      conversant1Position: 0
+      Conversant2: {fileID: 0}
+      conversant2Position: 2
+      Text: 

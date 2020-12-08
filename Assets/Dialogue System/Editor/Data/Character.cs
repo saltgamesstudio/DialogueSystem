@@ -6,6 +6,7 @@ namespace Salt.DialogueSystem.Data
     public class Character : UnityEngine.ScriptableObject
     {
         public string Name;
+        public string Nickname;
         public CharacterSprites Sprites;
 
     }

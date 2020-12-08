@@ -1,0 +1,134 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 641f802598edc3f42a12489ecb325397, type: 3}
+  m_Name: TestDim
+  m_EditorClassIdentifier: 
+  Nodes:
+  - Guid: 81a54424-bb4e-4392-a8f5-b0be6173ab79
+    JsonData: 
+    Character: {fileID: 0}
+    Text: 
+    Next: 60ce8cfe-b419-4fde-ab22-785ed9f0c63c
+    isChoiceNode: 0
+    isEntryPoint: 1
+    Choices: []
+    Properties:
+      Background: {fileID: 0}
+      Speaker: {fileID: 0}
+      speakerPosition: 1
+      Conversant1: {fileID: 0}
+      conversant1Position: 0
+      Conversant2: {fileID: 0}
+      conversant2Position: 2
+      Text: 
+  - Guid: 60ce8cfe-b419-4fde-ab22-785ed9f0c63c
+    JsonData: '{"x":281.0,"y":106.0}'
+    Character: {fileID: 0}
+    Text: 
+    Next: 0f1f6d46-aaa3-4fc0-a74b-74cf6dcb4812
+    isChoiceNode: 0
+    isEntryPoint: 0
+    Choices: []
+    Properties:
+      Background: {fileID: 0}
+      Speaker: {fileID: 11400000, guid: e37e1f7f8528b8643a162de843c10462, type: 2}
+      speakerPosition: 1
+      Conversant1: {fileID: 11400000, guid: e37e1f7f8528b8643a162de843c10462, type: 2}
+      conversant1Position: 0
+      Conversant2: {fileID: 11400000, guid: e37e1f7f8528b8643a162de843c10462, type: 2}
+      conversant2Position: 2
+      Text: Show All
+  - Guid: 0f1f6d46-aaa3-4fc0-a74b-74cf6dcb4812
+    JsonData: '{"x":759.0,"y":92.0}'
+    Character: {fileID: 0}
+    Text: 
+    Next: ec89aebb-a3c0-454b-afdd-e8c4d1a62c52
+    isChoiceNode: 0
+    isEntryPoint: 0
+    Choices: []
+    Properties:
+      Background: {fileID: 0}
+      Speaker: {fileID: 11400000, guid: e37e1f7f8528b8643a162de843c10462, type: 2}
+      speakerPosition: 0
+      Conversant1: {fileID: 11400000, guid: e37e1f7f8528b8643a162de843c10462, type: 2}
+      conversant1Position: 1
+      Conversant2: {fileID: 11400000, guid: e37e1f7f8528b8643a162de843c10462, type: 2}
+      conversant2Position: 2
+      Text: Show All 2
+  - Guid: ec89aebb-a3c0-454b-afdd-e8c4d1a62c52
+    JsonData: '{"x":1266.0,"y":65.0}'
+    Character: {fileID: 0}
+    Text: 
+    Next: bef8b5a6-a8d8-4949-af13-8d711fa432a3
+    isChoiceNode: 0
+    isEntryPoint: 0
+    Choices: []
+    Properties:
+      Background: {fileID: 0}
+      Speaker: {fileID: 11400000, guid: e37e1f7f8528b8643a162de843c10462, type: 2}
+      speakerPosition: 1
+      Conversant1: {fileID: 0}
+      conversant1Position: 0
+      Conversant2: {fileID: 0}
+      conversant2Position: 2
+      Text: Speaker Middle only
+  - Guid: bef8b5a6-a8d8-4949-af13-8d711fa432a3
+    JsonData: '{"x":1903.0,"y":51.0}'
+    Character: {fileID: 0}
+    Text: 
+    Next: 7fd6b551-e518-4713-9379-a999d30e0229
+    isChoiceNode: 0
+    isEntryPoint: 0
+    Choices: []
+    Properties:
+      Background: {fileID: 0}
+      Speaker: {fileID: 11400000, guid: e37e1f7f8528b8643a162de843c10462, type: 2}
+      speakerPosition: 1
+      Conversant1: {fileID: 11400000, guid: e37e1f7f8528b8643a162de843c10462, type: 2}
+      conversant1Position: 0
+      Conversant2: {fileID: 0}
+      conversant2Position: 2
+      Text: Speaker midle, conversant left
+  - Guid: 7fd6b551-e518-4713-9379-a999d30e0229
+    JsonData: '{"x":2497.0,"y":52.0}'
+    Character: {fileID: 0}
+    Text: 
+    Next: c03df439-aa31-44e1-b667-438a8ba94392
+    isChoiceNode: 0
+    isEntryPoint: 0
+    Choices: []
+    Properties:
+      Background: {fileID: 0}
+      Speaker: {fileID: 11400000, guid: e37e1f7f8528b8643a162de843c10462, type: 2}
+      speakerPosition: 1
+      Conversant1: {fileID: 0}
+      conversant1Position: 0
+      Conversant2: {fileID: 11400000, guid: e37e1f7f8528b8643a162de843c10462, type: 2}
+      conversant2Position: 2
+      Text: Speaker midlle, conversant right
+  - Guid: c03df439-aa31-44e1-b667-438a8ba94392
+    JsonData: '{"x":3016.0,"y":88.0}'
+    Character: {fileID: 0}
+    Text: 
+    Next: 
+    isChoiceNode: 0
+    isEntryPoint: 0
+    Choices: []
+    Properties:
+      Background: {fileID: 0}
+      Speaker: {fileID: 11400000, guid: e37e1f7f8528b8643a162de843c10462, type: 2}
+      speakerPosition: 0
+      Conversant1: {fileID: 0}
+      conversant1Position: 1
+      Conversant2: {fileID: 11400000, guid: e37e1f7f8528b8643a162de843c10462, type: 2}
+      conversant2Position: 2
+      Text: 

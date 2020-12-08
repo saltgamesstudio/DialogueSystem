@@ -1,7 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 
 namespace Salt.DialogueSystem.Data
@@ -24,6 +24,7 @@ namespace Salt.DialogueSystem.Data
         public bool isChoiceNode;
         public bool isEntryPoint;
         public List<ChoiceData> Choices = new List<ChoiceData>();
+        public DialogueProperties Properties;
     }
     [System.Serializable]
     public class ChoiceData
@@ -32,4 +33,27 @@ namespace Salt.DialogueSystem.Data
         public string Question;
     }
 
+    [Serializable]
+    public class DialogueProperties
+    {
+        public Sprite Background;
+        public Character Speaker;
+        public CharacterScreenPosition speakerPosition = CharacterScreenPosition.Middle;
+        public Character Conversant1;
+        public CharacterScreenPosition conversant1Position = CharacterScreenPosition.Left;
+        public Character Conversant2;
+        public CharacterScreenPosition conversant2Position = CharacterScreenPosition.Right;
+        public string Text;
+    }
+    public enum CharacterScreenPosition
+    {
+        Left, Middle, Right
+    }
+    public enum NodeType
+    {
+        Choice,
+        DialogueLine,
+        Start,
+        End
+    }
 }

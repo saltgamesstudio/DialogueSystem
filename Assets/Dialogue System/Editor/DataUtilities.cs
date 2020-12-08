@@ -36,8 +36,6 @@ namespace Salt.DialogueSystem.Editor
             }
         }
 
-        private static DataUtilities instance;
-
 
         public static DataUtilities GetInstance(DialogueGraph graph, DialogueData data)
         {
@@ -71,6 +69,21 @@ namespace Salt.DialogueSystem.Editor
                     {
                         data.Text = (node as DialogueNode).Text;
                         data.Character = (node as DialogueNode).Character;
+
+                        //New Dialogue Properties System
+                        var properties = new DialogueProperties
+                        {
+                            Text = (node as DialogueNode).Properties.Text,
+                            Speaker = (node as DialogueNode).Properties.Speaker,
+                            speakerPosition = (node as DialogueNode).Properties.speakerPosition,
+                            Conversant1 = (node as DialogueNode).Properties.Conversant1,
+                            conversant1Position = (node as DialogueNode).Properties.conversant1Position,
+                            Conversant2 = (node as DialogueNode).Properties.Conversant2,
+                            conversant2Position = (node as DialogueNode).Properties.conversant2Position
+
+                        };
+                        data.Properties = properties;
+
                     }
                     else
                     {
@@ -118,6 +131,7 @@ namespace Salt.DialogueSystem.Editor
         }
         public void LoadGraph()
         {
+            ClearGraph();
             GenerateNodeFromContainer(dataContainer);
             GenerateEdgeFromContainer(dataContainer);
         }
@@ -134,18 +148,29 @@ namespace Salt.DialogueSystem.Editor
                 }
                 if (node.isChoiceNode)
                 {
-                    ChoiceNode temp = graph.CreateChoiceNode("Choice Node");
+                    ChoiceNode temp = ChoiceNode.Create("Choice Node");
                     temp.Guid = node.Guid;
                     foreach (var choice in node.Choices)
                     {
-                        graph.AddChoicePort(temp as ChoiceNode, choice.Question, choice.Next);
+                        ChoiceNode.AddChoicePort(temp, choice.Question, choice.Next);
                     }
                     temp.SetPosition(new Rect(JsonUtility.FromJson<Vector2>(node.JsonData), graph.nodeSize));
                     graph.AddElement(temp);
                 }
                 else
                 {
-                    DialogueNode temp = graph.CreateDialogueNode("Dialogue Node", node.Text, node.Character, node.Next); ;
+                    var properties = new DialogueProperties
+                    {
+                        Text = node.Properties.Text,
+                        Speaker = node.Properties.Speaker,
+                        speakerPosition = node.Properties.speakerPosition,
+                        Conversant1 = node.Properties.Conversant1,
+                        conversant1Position = node.Properties.conversant1Position,
+                        Conversant2 = node.Properties.Conversant2,
+                        conversant2Position = node.Properties.conversant2Position
+
+                    };
+                    DialogueNode temp = DialogueNode.Create("Dialogue Node", properties, node.Next);
                     temp.Guid = node.Guid;
                     temp.SetPosition(new Rect(JsonUtility.FromJson<Vector2>(node.JsonData), graph.nodeSize));
                     graph.AddElement(temp);
@@ -170,7 +195,6 @@ namespace Salt.DialogueSystem.Editor
                 int choiceCounter = 0;
                 if (currentNode.isChoiceNode)
                 {
-
                     foreach(var choice in node.Choices)
                     {
                         var listPort = currentNode.outputContainer.Query<Port>().ToList();
@@ -191,7 +215,20 @@ namespace Salt.DialogueSystem.Editor
 
         }
 
+        private void ClearGraph()
+        {
+            if (Nodes.Any() && Nodes.Count > 1)
+            {
+                Nodes.Find(x => x.isEntryPoint).Guid = dataContainer.Nodes.Find(x => x.isEntryPoint).Guid;
+                foreach (var n in Nodes)
+                {
+                    if (n.isEntryPoint) continue;
+                    Edges.Where(x => x.input.node == n).ToList().ForEach(edge => graph.RemoveElement(edge));
+                    graph.RemoveElement(n);
+                }
 
+            }
+        }
 
 
 

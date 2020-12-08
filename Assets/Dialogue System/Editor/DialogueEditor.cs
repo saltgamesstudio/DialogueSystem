@@ -15,7 +15,8 @@ namespace Salt.DialogueSystem.Editor
 {
     public class DialogueEditor : GraphViewEditorWindow
     {
-        private static string path = "Assets/Salt Dialogue/New Dialogues";
+        //private static string path = "Assets/Salt Dialogue/New Dialogues";
+        private static string path = "";
         private static DialogueData container;
         private static DialogueGraph graph;
 
@@ -49,6 +50,7 @@ namespace Salt.DialogueSystem.Editor
         private void OnEnable()
         {
             CreateGraph();
+            CreateBlackBoard();
         }
 
         private void CreateGraph()
@@ -59,13 +61,13 @@ namespace Salt.DialogueSystem.Editor
             };
             graph.StretchToParentSize();
             rootVisualElement.Add(graph);
-
+            
             var toolbar = new Toolbar();
             
 
             var addDilogueNodeButton = new Button(() =>
             {
-                graph.AddDialogueNode("Dialogue Node");
+                graph.AddElement(DialogueNode.Create("Dialogue Node", new DialogueProperties())) ;
             })
             {
                 text = "New Dialogue Node"
@@ -73,7 +75,7 @@ namespace Salt.DialogueSystem.Editor
 
             var createChoiceNodeButton = new Button(() =>
             {
-                graph.AddChoiceNode("Choice Node");
+                graph.AddElement(ChoiceNode.Create("Choice Node"));
             })
             {
                 text = "New Choice Node"
@@ -99,20 +101,24 @@ namespace Salt.DialogueSystem.Editor
 
        
 
-        private void GenerateBlackBoard()
+        private void CreateBlackBoard()
         {
             var blackboard = new Blackboard(graph);
-            blackboard.Add(new BlackboardSection { title = "Exposed Variables" });
-            blackboard.addItemRequested = board =>
-            {
-                
-            };
+            blackboard.Add(new BlackboardSection { title = "Dialogue Properties" });
+            blackboard.addItemRequested = BuildBlackboardMenu;
             
             blackboard.SetPosition(new Rect(10, 30, 200, 300));
             graph.Add(blackboard);
-            //graph.Blackboard = blackboard;
 
         }
+
+        private void BuildBlackboardMenu(Blackboard board)
+        {
+            var menu = new GenericMenu();
+            menu.AddItem(new GUIContent("Background"), false, null);
+            menu.ShowAsContext();
+        }
+
         private void OnDisable()
         {
             rootVisualElement.Remove(graph);

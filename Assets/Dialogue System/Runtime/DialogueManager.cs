@@ -30,11 +30,9 @@ namespace Salt.DialogueSystem.Runtime
     /// </summary>
     public class DialogueManager : MonoBehaviour
     {
-        public static DialogueManager instance;
         private DialogueParser parser;
         [SerializeField] private DialogueData dialogueData;
-        private LogManager log;
-        private Character characterData;
+        private Character speakerCharacter;
 
 
         [SerializeField] private bool isTyping;
@@ -43,9 +41,12 @@ namespace Salt.DialogueSystem.Runtime
         //typing speed in character per second
         [SerializeField] [Tooltip("In Character per Second")] private float defaultTypingSpeed = 20;
 
-        [SerializeField] private Image expressionSprite;
+        //[SerializeField] private Image expressionSprite;
         [SerializeField] private TMP_Text lineText;
         [SerializeField] private TMP_Text nameText;
+        [SerializeField] private CharacterSpriteController leftCharacter;
+        [SerializeField] private CharacterSpriteController middleCharacter;
+        [SerializeField] private CharacterSpriteController rightCharacter;
 
         private float speed;
 
@@ -65,7 +66,6 @@ namespace Salt.DialogueSystem.Runtime
 
         private void Awake()
         {
-            instance = this;
             parser = new DialogueParser(dialogueData);
             entryPoint = parser.EntryPoint;
 
@@ -74,8 +74,8 @@ namespace Salt.DialogueSystem.Runtime
         {
             onLineFinish.AddListener(StopTyping);
             currentNode = parser.GetNextNode(entryPoint);
-            StartTyping(currentNode.Text);
-
+            StartTyping(currentNode);
+            rightCharacter.DimSprite();
         }
         private void Update()
         {
@@ -87,15 +87,150 @@ namespace Salt.DialogueSystem.Runtime
 
         }
 
-        private void StartTyping(string text)
+        private void StartTyping(NodeData data)
         {
             string[] subTexts = { };
-            characterData = currentNode.Character;
-            ParseCustomTag(text, ref subTexts, ref lineText);
+            speakerCharacter = currentNode.Properties.Speaker;
+            DimAllConversant(data);
+            ParseCustomTag(data.Properties.Text, ref subTexts, ref lineText);
             typingCoroutine = Typing(subTexts, lineText);
             StartCoroutine(Typing(subTexts, lineText));
 
 
+        }
+        private void CheckConversant(NodeData node)
+        {
+            if (node.Properties.Conversant1 == null)
+            {
+
+            }
+            if (node.Properties.Conversant2 == null)
+            {
+
+            }
+        }
+        private void DimAllConversant(NodeData node)
+        {
+            if(node.Properties.Conversant1 != null)
+            {
+                switch (node.Properties.conversant1Position)
+                {
+                    case CharacterScreenPosition.Left:
+                        {
+                            leftCharacter.isSpeaking = false;
+                            leftCharacter.onScreen = true;
+                            break;
+                        }
+                    case CharacterScreenPosition.Middle:
+                        {
+                            middleCharacter.isSpeaking = false;
+                            middleCharacter.onScreen = true;
+                            break;
+                        }
+                    case CharacterScreenPosition.Right:
+                        {
+                            rightCharacter.isSpeaking = false;
+                            rightCharacter.onScreen = true;
+                            break;
+                        }
+                }
+            }
+            else
+            {
+                switch (node.Properties.conversant1Position)
+                {
+                    case CharacterScreenPosition.Left:
+                        {
+                            leftCharacter.onScreen = false;
+
+                            break;
+                        }
+                    case CharacterScreenPosition.Middle:
+                        {
+                            middleCharacter.onScreen = false;
+                            break;
+                        }
+                    case CharacterScreenPosition.Right:
+                        {
+                            rightCharacter.onScreen = false;
+                            break;
+                        }
+                }
+            }
+
+            if(node.Properties.Conversant2 != null)
+            {
+                switch (node.Properties.conversant2Position)
+                {
+                    case CharacterScreenPosition.Left:
+                        {
+                            leftCharacter.isSpeaking = false;
+                            leftCharacter.onScreen = true;
+                            break;
+                        }
+                    case CharacterScreenPosition.Middle:
+                        {
+                            middleCharacter.isSpeaking = false;
+                            middleCharacter.onScreen = true;
+                            break;
+                        }
+                    case CharacterScreenPosition.Right:
+                        {
+                            rightCharacter.isSpeaking = false;
+                            rightCharacter.onScreen = true;
+                            break;
+                        }
+                }
+            }
+            else
+            {
+                switch (node.Properties.conversant2Position)
+                {
+                    case CharacterScreenPosition.Left:
+                        {
+                            leftCharacter.onScreen = false;
+
+                            break;
+                        }
+                    case CharacterScreenPosition.Middle:
+                        {
+                            middleCharacter.onScreen = false;
+                            break;
+                        }
+                    case CharacterScreenPosition.Right:
+                        {
+                            rightCharacter.onScreen = false;
+                            break;
+                        }
+                }
+            }
+            switch (node.Properties.speakerPosition)
+            {
+                case CharacterScreenPosition.Left:
+                    {
+                        leftCharacter.isSpeaking = true;
+                        leftCharacter.onScreen = true;
+                        Debug.Log("Speaker Left");
+
+                        break;
+                    }
+                case CharacterScreenPosition.Middle:
+                    {
+                        middleCharacter.isSpeaking = true;
+                        middleCharacter.onScreen = true;
+                        Debug.Log("Speaker Middle");
+
+                        break;
+                    }
+                case CharacterScreenPosition.Right:
+                    {
+                        rightCharacter.isSpeaking = true;
+                        middleCharacter.onScreen = true;
+                        Debug.Log("Speaker Right");
+
+                        break;
+                    }
+            }
         }
         private void NextLine()
         {
@@ -108,14 +243,14 @@ namespace Salt.DialogueSystem.Runtime
             else
             {
                 currentNode = parser.GetNextNode(currentNode);
-                if (!currentNode.isChoiceNode) StartTyping(currentNode.Text);
+                if (!currentNode.isChoiceNode) StartTyping(currentNode);
                 else
                 {
                     NextLine();
                     Debug.Log("Choice Node");
                 }
             }
-            
+
 
 
 
@@ -204,40 +339,40 @@ namespace Salt.DialogueSystem.Runtime
                 }
                 if (tag.StartsWith("expression="))
                 {
-                    var emosi = tag.Split('=')[1].ToLower();
-                    Sprite sprite = characterData.Sprites.Surprised;
-                    switch (emosi)
-                    {
-                        case "kaget":
-                            {
-                                sprite = characterData.Sprites.Surprised;
-                                break;
-                            }
-                        case "malu":
-                            {
-                                sprite = characterData.Sprites.Embarrassed;
-                                break;
-                            }
-                        case "marah":
-                            {
-                                sprite = characterData.Sprites.Angry;
-                                break;
-                            }
-                        case "sedih":
-                            {
-                                sprite = characterData.Sprites.Sad;
-                                break;
-                            }
-                        case "senang":
-                            {
-                                sprite = characterData.Sprites.Happy;
-                                break;
-                            }
-                    }
-                    expressionSprite.sprite = sprite;
-                    return null;
+                    //var emosi = tag.Split('=')[1].ToLower();
+                    //Sprite sprite = speakerCharacter.Sprites.Surprised;
+                    //switch (emosi)
+                    //{
+                    //    case "kaget":
+                    //        {
+                    //            sprite = speakerCharacter.Sprites.Surprised;
+                    //            break;
+                    //        }
+                    //    case "malu":
+                    //        {
+                    //            sprite = speakerCharacter.Sprites.Embarrassed;
+                    //            break;
+                    //        }
+                    //    case "marah":
+                    //        {
+                    //            sprite = speakerCharacter.Sprites.Angry;
+                    //            break;
+                    //        }
+                    //    case "sedih":
+                    //        {
+                    //            sprite = speakerCharacter.Sprites.Sad;
+                    //            break;
+                    //        }
+                    //    case "senang":
+                    //        {
+                    //            sprite = speakerCharacter.Sprites.Happy;
+                    //            break;
+                    //        }
+                    //}
+                    //speakerCharacter.Sprites..sprite = sprite;
+                    //return null;
                 }
-                
+
 
             }
 
@@ -262,6 +397,6 @@ namespace Salt.DialogueSystem.Runtime
             isTyping = false;
         }
     }
-   
+
 
 }

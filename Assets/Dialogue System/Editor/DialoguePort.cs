@@ -30,5 +30,10 @@ namespace Salt.DialogueSystem.Editor
             base.Disconnect(edge);
         }
 
+        private static Port CreatePort(Direction direction, Port.Capacity capacity = Port.Capacity.Single)
+        {
+            var port = DialoguePort.Create(direction, capacity);
+            return port;
+        }
     }
 }

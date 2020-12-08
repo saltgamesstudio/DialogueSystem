@@ -1,0 +1,89 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 641f802598edc3f42a12489ecb325397, type: 3}
+  m_Name: Better Dialogue
+  m_EditorClassIdentifier: 
+  Nodes:
+  - Guid: e424dbeb-15a6-4786-a622-25aa39a40c1f
+    JsonData: 
+    Character: {fileID: 0}
+    Text: 
+    Next: 3ff97ed9-4777-419d-896c-60f36dbf2bbb
+    isChoiceNode: 0
+    isEntryPoint: 1
+    Choices: []
+    Properties:
+      Background: {fileID: 0}
+      Speaker: {fileID: 0}
+      speakerPosition: 1
+      Conversant1: {fileID: 0}
+      conversant1Position: 0
+      Conversant2: {fileID: 0}
+      conversant2Position: 2
+      Text: 
+  - Guid: 40eae01e-84d9-4669-bc38-c14ce1b20dcd
+    JsonData: '{"x":1209.0,"y":-85.0}'
+    Character: {fileID: 0}
+    Text: 
+    Next: 
+    isChoiceNode: 0
+    isEntryPoint: 0
+    Choices: []
+    Properties:
+      Background: {fileID: 0}
+      Speaker: {fileID: 0}
+      speakerPosition: 1
+      Conversant1: {fileID: 0}
+      conversant1Position: 0
+      Conversant2: {fileID: 0}
+      conversant2Position: 2
+      Text: 
+  - Guid: 22b6002b-8440-4519-872f-4bf2dab8300b
+    JsonData: '{"x":767.0,"y":-97.0}'
+    Character: {fileID: 0}
+    Text: 
+    Next: 3ff97ed9-4777-419d-896c-60f36dbf2bbb
+    isChoiceNode: 1
+    isEntryPoint: 0
+    Choices:
+    - Next: 3ff97ed9-4777-419d-896c-60f36dbf2bbb
+      Question: 
+    - Next: 40eae01e-84d9-4669-bc38-c14ce1b20dcd
+      Question: 
+    - Next: 40eae01e-84d9-4669-bc38-c14ce1b20dcd
+      Question: 
+    Properties:
+      Background: {fileID: 0}
+      Speaker: {fileID: 0}
+      speakerPosition: 1
+      Conversant1: {fileID: 0}
+      conversant1Position: 0
+      Conversant2: {fileID: 0}
+      conversant2Position: 2
+      Text: 
+  - Guid: 3ff97ed9-4777-419d-896c-60f36dbf2bbb
+    JsonData: '{"x":477.0,"y":374.0}'
+    Character: {fileID: 0}
+    Text: 
+    Next: 22b6002b-8440-4519-872f-4bf2dab8300b
+    isChoiceNode: 0
+    isEntryPoint: 0
+    Choices: []
+    Properties:
+      Background: {fileID: 0}
+      Speaker: {fileID: 11400000, guid: e37e1f7f8528b8643a162de843c10462, type: 2}
+      speakerPosition: 1
+      Conversant1: {fileID: 11400000, guid: e37e1f7f8528b8643a162de843c10462, type: 2}
+      conversant1Position: 0
+      Conversant2: {fileID: 11400000, guid: e37e1f7f8528b8643a162de843c10462, type: 2}
+      conversant2Position: 2
+      Text: 

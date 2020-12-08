@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 970f0497d3058ec47b19b887d7e7b6f3, type: 3}
+  m_Name: Alaric
+  m_EditorClassIdentifier: 
+  Name: Alaric
+  Sprites:
+    Body: {fileID: 21300000, guid: 3830da9552664004eae6903682fe8102, type: 3}
+    Idle: {fileID: 21300000, guid: 25a3d5042be7b30498f41982cb3194d8, type: 3}
+    Surprised: {fileID: 21300000, guid: f72a3d4c2235ab54ca525a25e5e7fb96, type: 3}
+    Embarrassed: {fileID: 21300000, guid: 6fe47d9c9d8fa084ab3d256b595f757b, type: 3}
+    Angry: {fileID: 21300000, guid: bb645a6779ec0d14a82b750392b74738, type: 3}
+    Sad: {fileID: 21300000, guid: 2234633c5cace174ba42c196b34c3343, type: 3}
+    Happy: {fileID: 21300000, guid: f06b982838a6352459c623349b7ce446, type: 3}

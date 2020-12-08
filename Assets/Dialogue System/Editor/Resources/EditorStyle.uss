@@ -4,3 +4,8 @@
     --thick-line-color: rgba(193, 196, 192, 0.1);
     --spacing: 10;
 }
+
+.unity-foldout {
+    background-color : #3C3C3B;
+}
+
