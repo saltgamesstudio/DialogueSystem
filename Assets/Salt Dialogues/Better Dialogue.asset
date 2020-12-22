@@ -13,25 +13,89 @@ MonoBehaviour:
   m_Name: Better Dialogue
   m_EditorClassIdentifier: 
   Nodes:
-  - Guid: e424dbeb-15a6-4786-a622-25aa39a40c1f
+  - Guid: 1f85ec13-6c69-46bb-903d-b7f1e59ae313
     JsonData: 
     Character: {fileID: 0}
     Text: 
-    Next: 3ff97ed9-4777-419d-896c-60f36dbf2bbb
+    Next: 3c0be258-90d4-4246-96c3-2855c3f8c887
     isChoiceNode: 0
     isEntryPoint: 1
     Choices: []
     Properties:
       Background: {fileID: 0}
-      Speaker: {fileID: 0}
-      speakerPosition: 1
-      Conversant1: {fileID: 0}
-      conversant1Position: 0
-      Conversant2: {fileID: 0}
-      conversant2Position: 2
+      CharacterList: []
       Text: 
-  - Guid: 40eae01e-84d9-4669-bc38-c14ce1b20dcd
-    JsonData: '{"x":1209.0,"y":-85.0}'
+  - Guid: 3c0be258-90d4-4246-96c3-2855c3f8c887
+    JsonData: '{"x":384.0,"y":61.0}'
+    Character: {fileID: 0}
+    Text: 
+    Next: 4e16ad34-d434-409b-bcbf-5e180e426773
+    isChoiceNode: 0
+    isEntryPoint: 0
+    Choices: []
+    Properties:
+      Background: {fileID: 21300000, guid: 532eb7123f114ba44903763822204e73, type: 3}
+      CharacterList:
+      - {fileID: 11400000, guid: e37e1f7f8528b8643a162de843c10462, type: 2}
+      - {fileID: 0}
+      Text: <expression=marah>COK
+  - Guid: f888ffe4-d044-4d27-b806-a8ab78e154f1
+    JsonData: '{"x":1257.0,"y":51.0}'
+    Character: {fileID: 0}
+    Text: 
+    Next: 1d3d47d9-c72c-443f-9973-8af0fe0563f3
+    isChoiceNode: 1
+    isEntryPoint: 0
+    Choices:
+    - Next: 1d3d47d9-c72c-443f-9973-8af0fe0563f3
+      Question: Satu
+    - Next: f383e6d2-a542-4bd1-a6fc-a5f4ff1ecfd7
+      Question: Dua
+    Properties:
+      Background: {fileID: 0}
+      CharacterList: []
+      Text: 
+  - Guid: f383e6d2-a542-4bd1-a6fc-a5f4ff1ecfd7
+    JsonData: '{"x":1621.0,"y":193.0}'
+    Character: {fileID: 0}
+    Text: 
+    Next: c1046f49-c506-43ee-9768-3a36bdab649d
+    isChoiceNode: 0
+    isEntryPoint: 0
+    Choices: []
+    Properties:
+      Background: {fileID: 0}
+      CharacterList:
+      - {fileID: 11400000, guid: e37e1f7f8528b8643a162de843c10462, type: 2}
+      Text: '<sfx=2> Dari dua '
+  - Guid: 1d3d47d9-c72c-443f-9973-8af0fe0563f3
+    JsonData: '{"x":1631.0,"y":-145.0}'
+    Character: {fileID: 0}
+    Text: 
+    Next: c6d5c51c-58f7-4db0-aaa7-9de3097be29b
+    isChoiceNode: 0
+    isEntryPoint: 0
+    Choices: []
+    Properties:
+      Background: {fileID: 21300000, guid: 02fa0f0468c59ce4b9b7e8344a9912e4, type: 3}
+      CharacterList:
+      - {fileID: 11400000, guid: e37e1f7f8528b8643a162de843c10462, type: 2}
+      Text: Mau gw tembak?<pause=2><sfx=0>Dor <expression=senang>
+  - Guid: c1046f49-c506-43ee-9768-3a36bdab649d
+    JsonData: '{"x":2101.0,"y":214.0}'
+    Character: {fileID: 0}
+    Text: 
+    Next: 5adc9711-2f80-468e-a864-d02f62e25e31
+    isChoiceNode: 0
+    isEntryPoint: 0
+    Choices: []
+    Properties:
+      Background: {fileID: 0}
+      CharacterList:
+      - {fileID: 11400000, guid: e37e1f7f8528b8643a162de843c10462, type: 2}
+      Text: Dari dua 2
+  - Guid: 5adc9711-2f80-468e-a864-d02f62e25e31
+    JsonData: '{"x":2470.0,"y":209.0}'
     Character: {fileID: 0}
     Text: 
     Next: 
@@ -40,50 +104,65 @@ MonoBehaviour:
     Choices: []
     Properties:
       Background: {fileID: 0}
-      Speaker: {fileID: 0}
-      speakerPosition: 1
-      Conversant1: {fileID: 0}
-      conversant1Position: 0
-      Conversant2: {fileID: 0}
-      conversant2Position: 2
-      Text: 
-  - Guid: 22b6002b-8440-4519-872f-4bf2dab8300b
-    JsonData: '{"x":767.0,"y":-97.0}'
+      CharacterList:
+      - {fileID: 11400000, guid: e37e1f7f8528b8643a162de843c10462, type: 2}
+      - {fileID: 11400000, guid: e37e1f7f8528b8643a162de843c10462, type: 2}
+      Text: Dari dua 3
+  - Guid: cc932fa6-f0cf-4575-af4f-1f04588c04c3
+    JsonData: '{"x":2582.0,"y":-242.0}'
     Character: {fileID: 0}
     Text: 
-    Next: 3ff97ed9-4777-419d-896c-60f36dbf2bbb
-    isChoiceNode: 1
-    isEntryPoint: 0
-    Choices:
-    - Next: 3ff97ed9-4777-419d-896c-60f36dbf2bbb
-      Question: 
-    - Next: 40eae01e-84d9-4669-bc38-c14ce1b20dcd
-      Question: 
-    - Next: 40eae01e-84d9-4669-bc38-c14ce1b20dcd
-      Question: 
-    Properties:
-      Background: {fileID: 0}
-      Speaker: {fileID: 0}
-      speakerPosition: 1
-      Conversant1: {fileID: 0}
-      conversant1Position: 0
-      Conversant2: {fileID: 0}
-      conversant2Position: 2
-      Text: 
-  - Guid: 3ff97ed9-4777-419d-896c-60f36dbf2bbb
-    JsonData: '{"x":477.0,"y":374.0}'
-    Character: {fileID: 0}
-    Text: 
-    Next: 22b6002b-8440-4519-872f-4bf2dab8300b
+    Next: e7209ce6-de74-4058-83ac-57984a72f507
     isChoiceNode: 0
     isEntryPoint: 0
     Choices: []
     Properties:
       Background: {fileID: 0}
-      Speaker: {fileID: 11400000, guid: e37e1f7f8528b8643a162de843c10462, type: 2}
-      speakerPosition: 1
-      Conversant1: {fileID: 11400000, guid: e37e1f7f8528b8643a162de843c10462, type: 2}
-      conversant1Position: 0
-      Conversant2: {fileID: 11400000, guid: e37e1f7f8528b8643a162de843c10462, type: 2}
-      conversant2Position: 2
-      Text: 
+      CharacterList:
+      - {fileID: 11400000, guid: e37e1f7f8528b8643a162de843c10462, type: 2}
+      - {fileID: 11400000, guid: e37e1f7f8528b8643a162de843c10462, type: 2}
+      Text: Dari satu 3
+  - Guid: e7209ce6-de74-4058-83ac-57984a72f507
+    JsonData: '{"x":3071.0,"y":-192.0}'
+    Character: {fileID: 0}
+    Text: 
+    Next: 
+    isChoiceNode: 0
+    isEntryPoint: 0
+    Choices: []
+    Properties:
+      Background: {fileID: 0}
+      CharacterList:
+      - {fileID: 11400000, guid: e37e1f7f8528b8643a162de843c10462, type: 2}
+      Text: Dari satu 4
+  - Guid: c6d5c51c-58f7-4db0-aaa7-9de3097be29b
+    JsonData: '{"x":2156.0,"y":-234.0}'
+    Character: {fileID: 0}
+    Text: 
+    Next: cc932fa6-f0cf-4575-af4f-1f04588c04c3
+    isChoiceNode: 0
+    isEntryPoint: 0
+    Choices: []
+    Properties:
+      Background: {fileID: 0}
+      CharacterList:
+      - {fileID: 11400000, guid: e37e1f7f8528b8643a162de843c10462, type: 2}
+      - {fileID: 11400000, guid: e37e1f7f8528b8643a162de843c10462, type: 2}
+      Text: Dari satu 2
+  - Guid: 4e16ad34-d434-409b-bcbf-5e180e426773
+    JsonData: '{"x":827.0,"y":59.0}'
+    Character: {fileID: 0}
+    Text: 
+    Next: f888ffe4-d044-4d27-b806-a8ab78e154f1
+    isChoiceNode: 0
+    isEntryPoint: 0
+    Choices: []
+    Properties:
+      Background: {fileID: 0}
+      CharacterList:
+      - {fileID: 11400000, guid: e37e1f7f8528b8643a162de843c10462, type: 2}
+      Text: <sfx=1>DOR
+  SoundFx:
+  - {fileID: 8300000, guid: a8c8b6705d0eadc4eb521629958e880a, type: 3}
+  - {fileID: 8300000, guid: 3e291b9ee36d6754484da41203b0deb8, type: 3}
+  - {fileID: 8300000, guid: 4364056ad501dbd49a13c66c8b18fb1e, type: 3}
